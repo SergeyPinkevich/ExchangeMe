@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/search_currency_flag"
+        android:layout_width="54dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/search_currency_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/avenir_medium"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@id/search_currency_flag"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="European Union" />
+
+    <TextView
+        android:id="@+id/search_currency_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/avenir_regular"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/search_currency_flag"
+        app:layout_constraintTop_toBottomOf="@id/search_currency_country"
+        tools:text="Euro €" />
+
+</android.support.constraint.ConstraintLayout>
