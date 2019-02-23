@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mockingbird.spinkevich.domain.entity.model.Country
+import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
-import kotlinx.android.synthetic.main.search_currency_item.view.*
+import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_country
+import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_flag
+import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_name
 
 class NewCurrencyAdapter : ListAdapter<Country, NewCurrencyAdapter.ViewHolder>(DIFF_CALLBACK) {
 
@@ -31,8 +33,7 @@ class NewCurrencyAdapter : ListAdapter<Country, NewCurrencyAdapter.ViewHolder>(D
 
         private fun setImage(country: Country) {
             val context = itemView.context
-            val resourceName = "${country.name.replace("\\s+".toRegex(), "").toLowerCase()}_svg"
-            val id = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
+            val id = context.resources.getIdentifier(country.drawableResource, "drawable", context.packageName)
             itemView.search_currency_flag.setImageResource(id)
         }
     }

@@ -10,12 +10,12 @@ import android.view.MenuInflater
 import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
-import com.mockingbird.spinkevich.domain.entity.model.Country
+import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.utils.onQueryTextChange
-import kotlinx.android.synthetic.main.fragment_new_currency.*
+import kotlinx.android.synthetic.main.fragment_new_currency.currencies_list
 
 class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurrencyView {
 
@@ -66,8 +66,7 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     }
 
     private fun checkIfCountryHasFlag(country: Country): Boolean {
-        val resourceName = "${country.name.replace("\\s+".toRegex(), "").toLowerCase()}_svg"
-        val id = context?.resources?.getIdentifier(resourceName, "drawable", requireContext().packageName)
+        val id = context?.resources?.getIdentifier(country.drawableResource, "drawable", requireContext().packageName)
         if (id == 0) {
             return false
         }

@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.data.utils
 import android.content.Context
 import com.google.gson.Gson
 import com.mockingbird.spinkevich.data.entity.CountriesInfo
+import org.json.JSONObject
 import java.io.IOException
 import javax.inject.Inject
 
@@ -27,5 +28,11 @@ class DataHelper @Inject constructor(
             e.printStackTrace()
         }
         return null
+    }
+
+    fun parseRate(json: String, currency: String): Double {
+        val jsonObject = JSONObject(json)
+        val currency = jsonObject.getJSONObject(currency)
+        return currency.getDouble("rate")
     }
 }

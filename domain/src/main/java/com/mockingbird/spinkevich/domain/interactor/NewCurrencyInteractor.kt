@@ -1,6 +1,6 @@
 package com.mockingbird.spinkevich.domain.interactor
 
-import com.mockingbird.spinkevich.domain.entity.model.Country
+import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.repository.NewCurrencyRepository
 import com.mockingbird.spinkevich.domain.usecase.CountriesListUseCase
 import io.reactivex.Single

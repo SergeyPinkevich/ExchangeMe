@@ -2,15 +2,22 @@ package com.mockingbird.spinkevich.exchangeme.di.component
 
 import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureComponentCompanion
 import com.mockingbird.spinkevich.exchangeme.di.BaseApp
+import com.mockingbird.spinkevich.exchangeme.di.graph.ExchangeFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
+import com.mockingbird.spinkevich.exchangeme.di.module.ApiModule
 import com.mockingbird.spinkevich.exchangeme.di.module.ApplicationModule
+import com.mockingbird.spinkevich.exchangeme.di.module.ExchangeModule
 import com.mockingbird.spinkevich.exchangeme.di.module.NewCurrencyModule
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(modules = [ApplicationModule::class, NewCurrencyModule::class])
+@Singleton
+@Component(modules = [ApplicationModule::class, NewCurrencyModule::class, ExchangeModule::class, ApiModule::class])
 interface ApplicationComponent {
 
     fun inject(graph: NewCurrencyFragmentGraph)
+
+    fun inject(graph: ExchangeFragmentGraph)
 
     companion object : FeatureComponentCompanion<ApplicationComponent>() {
 

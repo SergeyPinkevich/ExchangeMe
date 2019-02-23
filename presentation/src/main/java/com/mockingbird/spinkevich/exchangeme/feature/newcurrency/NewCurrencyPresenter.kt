@@ -1,7 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
 
 import com.arellomobile.mvp.InjectViewState
-import com.mockingbird.spinkevich.domain.entity.model.Country
+import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.usecase.CountriesListUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
