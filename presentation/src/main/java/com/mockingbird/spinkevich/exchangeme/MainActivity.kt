@@ -13,4 +13,12 @@ class MainActivity : AppCompatActivity() {
 
         addFragmentToStack(R.id.fragment_container, ExchangeFragment())
     }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount <= 1) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
