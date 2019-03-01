@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
+package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
@@ -8,34 +8,33 @@ import android.view.View
 import android.view.ViewGroup
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
-import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_country
-import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_flag
-import kotlinx.android.synthetic.main.search_currency_item.view.search_currency_name
+import kotlinx.android.synthetic.main.exchange_currency_item.view.exchange_currency_code
+import kotlinx.android.synthetic.main.exchange_currency_item.view.exchange_currency_flag
+import kotlinx.android.synthetic.main.exchange_currency_item.view.exchange_currency_name
 
-class NewCurrencyAdapter(private val clickListener: (Country) -> Unit) : ListAdapter<Country, NewCurrencyAdapter.ViewHolder>(DIFF_CALLBACK) {
+class ExchangeAdapter : ListAdapter<Country, ExchangeAdapter.ViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_currency_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeAdapter.ViewHolder {
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.exchange_currency_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position))
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(country: Country, clickListener: (Country) -> Unit) {
-            val currency = country.currencies[0]
+        fun bind(country: Country) {
+            val currency = country.currencies.firstOrNull()
             setImage(country)
-            itemView.search_currency_country.text = country.name
-            itemView.search_currency_name.text = "${currency.name}, ${currency.symbol}"
-            itemView.setOnClickListener { clickListener(country) }
+            itemView.exchange_currency_code.text = currency?.code
+            itemView.exchange_currency_name.text = "${currency?.name} ${currency?.symbol}"
         }
 
         private fun setImage(country: Country) {
             val context = itemView.context
             val id = context.resources.getIdentifier(country.drawableResource, "drawable", context.packageName)
-            itemView.search_currency_flag.setImageResource(id)
+            itemView.exchange_currency_flag.setImageResource(id)
         }
     }
 
@@ -53,4 +52,3 @@ class NewCurrencyAdapter(private val clickListener: (Country) -> Unit) : ListAda
         }
     }
 }
-

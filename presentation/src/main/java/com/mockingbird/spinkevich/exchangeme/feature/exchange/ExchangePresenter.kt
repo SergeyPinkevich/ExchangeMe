@@ -19,7 +19,7 @@ class ExchangePresenter @Inject constructor(
 ): BasePresenter<ExchangeView>() {
 
     private lateinit var baseCountry: Country
-    private lateinit var convertedList: List<Country>
+    private var convertedList: MutableList<Country> = mutableListOf()
 
     init {
         baseCountry = Country("RussianFederation", "Europe", "Eastern Europe", "", listOf(Currency("RUB", "Russian rouble", "₽")))
@@ -31,5 +31,18 @@ class ExchangePresenter @Inject constructor(
             .subscribeWithTimberError {
                 dataHelper.parseRate(it, "usd")
             }
+    }
+
+    fun addCurrencyMenuClicked() {
+        viewState.openNewCurrencyScreen()
+    }
+
+    fun addCountry(country: Country) {
+        convertedList.add(country)
+        viewState.updateCountriesList(convertedList)
+    }
+
+    fun removeCountry(country: Country) {
+        convertedList.remove(country)
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ExchangeMe</string>
     <string name="search_menu_title">Search</string>
+    <string name="add_menu_title">Add currency</string>
     <string name="search_field_hint">Currency or country</string>
 </resources>

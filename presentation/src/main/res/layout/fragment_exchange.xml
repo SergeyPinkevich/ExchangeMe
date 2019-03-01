@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,12 +44,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:paddingBottom="0dp"
             android:fontFamily="@font/avenir_medium"
-            android:textColor="@color/black_text_color"
-            android:textSize="24sp"
             android:inputType="numberDecimal"
+            android:paddingBottom="0dp"
+            android:textColor="@color/black_text_color"
             android:textCursorDrawable="@null"
+            android:textSize="24sp"
             android:theme="@style/NoDecorationEditText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -66,8 +66,14 @@
             android:textSize="16sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/base_currency_amount"
-            tools:text="100" />
+            tools:text="Russian rouble ₽" />
 
     </android.support.constraint.ConstraintLayout>
 
-</FrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/currencies_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/base_currency" />
+
+</android.support.constraint.ConstraintLayout>
