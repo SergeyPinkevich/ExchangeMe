@@ -1,14 +1,18 @@
-package com.mockingbird.spinkevich.exchangeme.core.feature
+package com.mockingbird.spinkevich.exchangeme.core.feature.fragment
 
 import android.os.Bundle
-import com.mockingbird.spinkevich.exchangeme.core.BaseFragment
+import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureGraph
 
 abstract class FeatureFragment<G : FeatureGraph<*>> : BaseFragment() {
 
     val graph by lazy { uninitializedGraph.apply { init() } }
 
     private val uninitializedGraph by lazy { createGraph() }
-    private val featureFragmentDelegate by lazy { FeatureFragmentDelegate(this) { uninitializedGraph } }
+    private val featureFragmentDelegate by lazy {
+        FeatureFragmentDelegate(
+            this
+        ) { uninitializedGraph }
+    }
 
     abstract fun createGraph(): G
 

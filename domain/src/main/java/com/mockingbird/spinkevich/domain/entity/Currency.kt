@@ -9,6 +9,8 @@ data class Currency(
     val name: String,
     val symbol: String
 ): Parcelable {
+
     open fun areItemsTheSame(newItem: Currency) = this == newItem
+
     open fun areContentsTheSame(newItem: Currency) = this == newItem
 }

@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">ExchangeMe</string>
     <string name="search_menu_title">Search</string>
+
+    <!-- New currency screen -->
     <string name="add_menu_title">Add currency</string>
     <string name="search_field_hint">Currency or country</string>
+
+    <!-- Start screen -->
+    <string name="title_permission">Please, give us access to your location</string>
+    <string name="description_permission">It will us to determine the currency which country you are</string>
+    <string name="allow_permission_button">Allow</string>
+    <string name="refuse_permission_button">Select manually</string>
+
+    <string name="error_detect_location">Unable to locate</string>
 </resources>

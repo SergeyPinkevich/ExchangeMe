@@ -33,6 +33,7 @@ dependencies {
             "com.android.support:cardview-v7:$support_version",
             "com.android.support:recyclerview-v7:$support_version",
             "com.android.support:support-v4:$support_version",
+            "com.android.support:design:$support_version",
 
             "com.google.dagger:dagger:$dagger_version",
 

@@ -1,6 +1,7 @@
-package com.mockingbird.spinkevich.exchangeme.core.feature
+package com.mockingbird.spinkevich.exchangeme.core.feature.fragment
 
 import android.support.v4.app.Fragment
+import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureGraph
 
 class FeatureFragmentDelegate(
     private val fragment: Fragment,

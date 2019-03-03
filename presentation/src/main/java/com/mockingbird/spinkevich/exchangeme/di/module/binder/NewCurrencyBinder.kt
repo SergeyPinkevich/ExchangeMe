@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.exchangeme.di.module
+package com.mockingbird.spinkevich.exchangeme.di.module.binder
 
 import com.mockingbird.spinkevich.data.repository.NewCurrencyRepositoryImpl
 import com.mockingbird.spinkevich.domain.interactor.NewCurrencyInteractor

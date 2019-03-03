@@ -39,6 +39,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="RUB" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toBottomOf="@id/base_currency"
+            app:layout_constraintLeft_toRightOf="@id/base_currency_code"
+            app:layout_constraintTop_toTopOf="@id/base_currency" />
+
         <EditText
             android:id="@+id/base_currency_amount"
             android:layout_width="wrap_content"
@@ -49,7 +58,7 @@
             android:paddingBottom="0dp"
             android:textColor="@color/black_text_color"
             android:textCursorDrawable="@null"
-            android:textSize="24sp"
+            android:textSize="32sp"
             android:theme="@style/NoDecorationEditText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

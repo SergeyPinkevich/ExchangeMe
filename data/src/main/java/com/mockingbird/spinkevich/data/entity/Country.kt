@@ -8,6 +8,8 @@ data class CountriesInfo(
 )
 
 data class Country(
+    @SerializedName("alpha2Code")
+    val alpha2Code: String?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("region")

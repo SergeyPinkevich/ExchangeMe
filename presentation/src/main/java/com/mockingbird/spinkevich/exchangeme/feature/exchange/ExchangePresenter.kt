@@ -22,7 +22,7 @@ class ExchangePresenter @Inject constructor(
     private var convertedList: MutableList<Country> = mutableListOf()
 
     init {
-        baseCountry = Country("RussianFederation", "Europe", "Eastern Europe", "", listOf(Currency("RUB", "Russian rouble", "₽")))
+        baseCountry = Country("RU", "RussianFederation", "Europe", "Eastern Europe", "", listOf(Currency("RUB", "Russian rouble", "₽")))
         viewState.initializeBaseCountry(baseCountry)
         currentRatesUseCase.getCurrentRates(baseCountry.currencies.first().code.toLowerCase())
             .subscribeOn(Schedulers.io())

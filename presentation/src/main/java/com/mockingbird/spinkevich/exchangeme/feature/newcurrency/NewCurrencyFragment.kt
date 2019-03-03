@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
 import android.app.Activity
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -13,7 +14,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
-import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureFragment
+import com.mockingbird.spinkevich.exchangeme.core.feature.fragment.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.utils.onQueryTextChange
 import kotlinx.android.synthetic.main.fragment_new_currency.currencies_list
@@ -40,6 +41,7 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.add_menu_title)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -47,6 +49,7 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
         inflater?.inflate(R.menu.search_menu, menu)
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = getString(R.string.search_field_hint)
 
         searchView.onQueryTextChange { presenter.filterCurrencies(it) }
     }

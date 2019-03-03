@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.exchangeme.core
+package com.mockingbird.spinkevich.exchangeme.core.feature.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

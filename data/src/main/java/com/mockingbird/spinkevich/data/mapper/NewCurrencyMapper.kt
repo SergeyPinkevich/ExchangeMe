@@ -9,6 +9,7 @@ object NewCurrencyMapper {
 
     fun convertToDomain(country: CountryData): CountryDomain {
         return CountryDomain(
+            country.alpha2Code ?: "",
             country.name ?: "",
             country.region ?: "",
             country.subregion ?: "",

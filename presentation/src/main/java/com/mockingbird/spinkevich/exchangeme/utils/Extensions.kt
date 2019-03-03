@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.SearchView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.mockingbird.spinkevich.exchangeme.core.ShowHideProgress
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -37,4 +38,9 @@ fun SearchView.onQueryTextChange(onQueryTextChange: (String) -> Unit) {
 fun Context.showKeyboard(view: View) {
     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun <T> Single<T>.addProgress(showAndHideView: ShowHideProgress): Single<T> {
+    return this.doOnSubscribe { showAndHideView.showProgress() }
+        .doAfterTerminate { showAndHideView.hideProgress() }
 }

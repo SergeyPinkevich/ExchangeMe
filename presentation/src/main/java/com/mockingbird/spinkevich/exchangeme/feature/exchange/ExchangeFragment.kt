@@ -2,7 +2,10 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,7 +14,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
-import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureFragment
+import com.mockingbird.spinkevich.exchangeme.core.feature.fragment.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.ExchangeFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.BF_NEW_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NEW_CURRENCY_REQUEST_CODE
@@ -42,15 +45,18 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ExchangeAdapter()
+        val itemDecor = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
 
         currencies_list.adapter = adapter
         currencies_list.layoutManager = LinearLayoutManager(context)
+        currencies_list.addItemDecoration(itemDecor)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

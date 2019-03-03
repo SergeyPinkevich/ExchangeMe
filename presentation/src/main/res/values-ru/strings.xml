@@ -2,6 +2,16 @@
 <resources>
     <string name="app_name">ExchangeMe</string>
     <string name="search_menu_title">Поиск</string>
+
+    <!-- New currency screen -->
     <string name="add_menu_title">Добавить валюту</string>
     <string name="search_field_hint">Валюта или страна</string>
+
+    <!-- Start screen -->
+    <string name="title_permission">Пожалуйста, дайте доступ к местоположению</string>
+    <string name="description_permission">Мы сможем определить валюту страны, в которой вы сейчас находитесь</string>
+    <string name="allow_permission_button">Разрешить</string>
+    <string name="refuse_permission_button">Выбрать вручную</string>
+
+    <string name="error_detect_location">Не удалось определить местоположение</string>
 </resources>
