@@ -19,6 +19,7 @@ import com.mockingbird.spinkevich.exchangeme.di.graph.ExchangeFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.BF_NEW_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NEW_CURRENCY_REQUEST_CODE
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NewCurrencyFragment
+import com.mockingbird.spinkevich.exchangeme.feature.start.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_amount
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_code
@@ -33,6 +34,10 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
 
     @ProvidePresenter
     fun providePresenter(): ExchangePresenter {
+        val presenter = graph.presenter
+        arguments?.let {
+            presenter.init(it.getParcelable(BF_BASE_COUNTRY))
+        }
         return graph.presenter
     }
 
@@ -73,6 +78,7 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
             val country = data?.getParcelableExtra<Country>(BF_NEW_COUNTRY)
             country?.let { presenter.addCountry(country) }
         }
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
     }
 
     override fun initializeBaseCountry(country: Country) {

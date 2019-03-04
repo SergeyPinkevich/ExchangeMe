@@ -44,3 +44,19 @@ fun <T> Single<T>.addProgress(showAndHideView: ShowHideProgress): Single<T> {
     return this.doOnSubscribe { showAndHideView.showProgress() }
         .doAfterTerminate { showAndHideView.hideProgress() }
 }
+
+fun View.visibleIf(condition: () -> Boolean) {
+    if (condition.invoke()) {
+        makeVisible()
+    } else {
+        makeGone()
+    }
+}
+
+fun View.makeVisible() {
+    visibility = View.VISIBLE
+}
+
+fun View.makeGone() {
+    visibility = View.GONE
+}

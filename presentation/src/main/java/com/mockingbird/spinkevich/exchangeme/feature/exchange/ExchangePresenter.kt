@@ -3,7 +3,6 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.data.utils.DataHelper
 import com.mockingbird.spinkevich.domain.entity.Country
-import com.mockingbird.spinkevich.domain.entity.Currency
 import com.mockingbird.spinkevich.domain.usecase.CurrentRatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
@@ -21,8 +20,8 @@ class ExchangePresenter @Inject constructor(
     private lateinit var baseCountry: Country
     private var convertedList: MutableList<Country> = mutableListOf()
 
-    init {
-        baseCountry = Country("RU", "RussianFederation", "Europe", "Eastern Europe", "", listOf(Currency("RUB", "Russian rouble", "₽")))
+    fun init(country: Country) {
+        baseCountry = country
         viewState.initializeBaseCountry(baseCountry)
         currentRatesUseCase.getCurrentRates(baseCountry.currencies.first().code.toLowerCase())
             .subscribeOn(Schedulers.io())
