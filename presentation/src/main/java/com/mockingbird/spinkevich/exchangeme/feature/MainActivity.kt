@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.feature.exchange.ExchangeFragment
-import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NewCurrencyFragment
 import com.mockingbird.spinkevich.exchangeme.feature.start.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.feature.start.BF_MANUALLY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
@@ -17,18 +16,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         intent?.let {
-            if (it.extras.containsKey(BF_MANUALLY) && it.getBooleanExtra(BF_MANUALLY, true)) {
-                addFragmentToStack(R.id.fragment_container, ExchangeFragment())
-                addFragmentToStack(R.id.fragment_container, NewCurrencyFragment())
-            } else {
+            val fragment = ExchangeFragment()
+            if (it.extras.containsKey(BF_MANUALLY) && !it.getBooleanExtra(BF_MANUALLY, true)) {
                 val country = it.getParcelableExtra<Country>(BF_BASE_COUNTRY)
-                val fragment = ExchangeFragment().apply {
+                fragment.apply {
                     arguments = Bundle().apply {
                         putParcelable(BF_BASE_COUNTRY, country)
                     }
                 }
-                addFragmentToStack(R.id.fragment_container, fragment)
             }
+            addFragmentToStack(R.id.fragment_container, fragment)
         }
     }
 

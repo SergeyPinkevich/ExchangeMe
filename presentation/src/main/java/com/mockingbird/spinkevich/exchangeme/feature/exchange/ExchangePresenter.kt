@@ -17,13 +17,13 @@ class ExchangePresenter @Inject constructor(
     private val dataHelper: DataHelper
 ): BasePresenter<ExchangeView>() {
 
-    private lateinit var baseCountry: Country
+    private var baseCountry: Country? = null
     private var convertedList: MutableList<Country> = mutableListOf()
 
     fun init(country: Country) {
         baseCountry = country
-        viewState.initializeBaseCountry(baseCountry)
-        currentRatesUseCase.getCurrentRates(baseCountry.currencies.first().code.toLowerCase())
+        viewState.initializeBaseCountry(baseCountry!!)
+        currentRatesUseCase.getCurrentRates(baseCountry!!.currencies.first().code.toLowerCase())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { Timber.e(it) }
@@ -37,8 +37,13 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun addCountry(country: Country) {
-        convertedList.add(country)
-        viewState.updateCountriesList(convertedList)
+        if (baseCountry == null) {
+            baseCountry = country
+            viewState.initializeBaseCountry(baseCountry!!)
+        } else {
+            convertedList.add(country)
+            viewState.updateCountriesList(convertedList)
+        }
     }
 
     fun removeCountry(country: Country) {
