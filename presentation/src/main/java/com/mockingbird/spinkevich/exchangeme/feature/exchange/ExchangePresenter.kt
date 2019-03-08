@@ -7,7 +7,6 @@ import com.mockingbird.spinkevich.domain.usecase.CurrentRatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,19 +16,20 @@ class ExchangePresenter @Inject constructor(
     private val dataHelper: DataHelper
 ): BasePresenter<ExchangeView>() {
 
-    private var baseCountry: Country? = null
+    private var isBaseCountryInitialized = false
     private var convertedList: MutableList<Country> = mutableListOf()
 
     fun init(country: Country) {
-        baseCountry = country
-        viewState.initializeBaseCountry(baseCountry!!)
-        currentRatesUseCase.getCurrentRates(baseCountry!!.currencies.first().code.toLowerCase())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { Timber.e(it) }
-            .subscribeWithTimberError {
-                dataHelper.parseRate(it, "usd")
-            }
+        isBaseCountryInitialized = true
+        viewState.initializeBaseCountry(country)
+        unsubscribeOnDestroy(
+            currentRatesUseCase.getCurrentRates(country.currencies.first().code.toLowerCase())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError { Timber.e(it) }
+                .subscribeWithTimberError {
+                    dataHelper.parseRate(it, "usd")
+                }
+        )
     }
 
     fun addCurrencyMenuClicked() {
@@ -37,16 +37,12 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun addCountry(country: Country) {
-        if (baseCountry == null) {
-            baseCountry = country
-            viewState.initializeBaseCountry(baseCountry!!)
+        if (!isBaseCountryInitialized) {
+            isBaseCountryInitialized = true
+            viewState.initializeBaseCountry(country)
         } else {
             convertedList.add(country)
             viewState.updateCountriesList(convertedList)
         }
-    }
-
-    fun removeCountry(country: Country) {
-        convertedList.remove(country)
     }
 }

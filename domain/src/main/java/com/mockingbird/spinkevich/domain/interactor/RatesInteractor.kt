@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.domain.interactor
 import com.mockingbird.spinkevich.domain.repository.RatesRepository
 import com.mockingbird.spinkevich.domain.usecase.CurrentRatesUseCase
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RatesInteractor @Inject constructor(
@@ -11,5 +12,6 @@ class RatesInteractor @Inject constructor(
 
     override fun getCurrentRates(currency: String): Single<String> {
         return ratesRepository.getCurrentRates(currency)
+            .subscribeOn(Schedulers.io())
     }
 }

@@ -17,7 +17,7 @@ import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.core.feature.fragment.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.ExchangeFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.BF_NEW_COUNTRY
-import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NEW_CURRENCY_REQUEST_CODE
+import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NEW_COUNTRY_REQUEST_CODE
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NewCurrencyFragment
 import com.mockingbird.spinkevich.exchangeme.feature.start.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.feature.start.BF_MANUALLY
@@ -35,11 +35,11 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
 
     @ProvidePresenter
     fun providePresenter(): ExchangePresenter {
-        val presenter = graph.presenter
-        arguments?.let {
-            presenter.init(it.getParcelable(BF_BASE_COUNTRY))
+        return graph.presenter.apply {
+            arguments?.let {
+                presenter.init(it.getParcelable(BF_BASE_COUNTRY))
+            }
         }
-        return graph.presenter
     }
 
     private lateinit var adapter: ExchangeAdapter
@@ -51,12 +51,16 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
         requireActivity().intent?.let {
             if (it.extras.containsKey(BF_MANUALLY) && it.getBooleanExtra(BF_MANUALLY, true)) {
                 openNewCurrencyScreen()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,11 +84,10 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == NEW_CURRENCY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == NEW_COUNTRY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val country = data?.getParcelableExtra<Country>(BF_NEW_COUNTRY)
             country?.let { presenter.addCountry(country) }
         }
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
     }
 
     override fun initializeBaseCountry(country: Country) {
@@ -98,7 +101,7 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
 
     override fun openNewCurrencyScreen() {
         val fragment = NewCurrencyFragment()
-        fragment.setTargetFragment(this, NEW_CURRENCY_REQUEST_CODE)
+        fragment.setTargetFragment(this, NEW_COUNTRY_REQUEST_CODE)
         requireActivity().addFragmentToStack(R.id.fragment_container, fragment)
     }
 

@@ -19,7 +19,7 @@ import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.utils.onQueryTextChange
 import kotlinx.android.synthetic.main.fragment_new_currency.currencies_list
 
-const val NEW_CURRENCY_REQUEST_CODE = 1492
+const val NEW_COUNTRY_REQUEST_CODE = 1492
 const val BF_NEW_COUNTRY = ".new.currency"
 
 class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurrencyView {
@@ -71,7 +71,7 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
         val intent = requireActivity().intent.apply {
             putExtra(BF_NEW_COUNTRY, country)
         }
-        targetFragment?.onActivityResult(NEW_CURRENCY_REQUEST_CODE, Activity.RESULT_OK, intent)
+        targetFragment?.onActivityResult(NEW_COUNTRY_REQUEST_CODE, Activity.RESULT_OK, intent)
         requireActivity().onBackPressed()
     }
 

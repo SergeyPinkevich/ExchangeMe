@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.usecase.CountriesListUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
+import com.mockingbird.spinkevich.exchangeme.utils.simplify
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -29,7 +30,11 @@ class NewCurrencyPresenter @Inject constructor(
     }
 
     fun filterCurrencies(query: String) {
-        val filteredList = countriesList.filter { it.name.trim().toLowerCase().contains(query.trim().toLowerCase()) || it.currencies[0].name.trim().toLowerCase().contains(query.trim().toLowerCase()) }
+        val filteredList = countriesList.filter {
+            val filterByCurrencyName = it.name.simplify().contains(query.simplify())
+            val filterByCurrencyCode = it.currencies[0].name.simplify().contains(query.simplify())
+            filterByCurrencyName || filterByCurrencyCode
+        }
         viewState.showCountriesList(filteredList)
     }
 }

@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         intent?.let {
             val fragment = ExchangeFragment()
-            if (it.extras.containsKey(BF_MANUALLY) && !it.getBooleanExtra(BF_MANUALLY, true)) {
+            if (it.extras?.containsKey(BF_MANUALLY) == true && !it.getBooleanExtra(BF_MANUALLY, true)) {
                 val country = it.getParcelableExtra<Country>(BF_BASE_COUNTRY)
                 fragment.apply {
                     arguments = Bundle().apply {
