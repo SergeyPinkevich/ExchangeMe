@@ -16,8 +16,6 @@ data class Country(
     val region: String?,
     @SerializedName("subregion")
     val subregion: String?,
-    @SerializedName("flag")
-    val flag: String?,
     @SerializedName("currencies")
     val currencies: List<Currency>?
 )

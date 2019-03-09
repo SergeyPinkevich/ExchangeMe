@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 interface CountriesListUseCase {
 
-    fun getCountriesList(): Single<List<Country>>
+    fun getAllCountriesList(): Single<List<Country>>
 }

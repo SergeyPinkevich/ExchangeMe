@@ -19,7 +19,7 @@ class NewCurrencyPresenter @Inject constructor(
 
     fun loadCurrencies() {
         unsubscribeOnDestroy(
-            countriesListUseCase.getCountriesList()
+            countriesListUseCase.getAllCountriesList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {

@@ -13,7 +13,6 @@ object NewCurrencyMapper {
             country.name ?: "",
             country.region ?: "",
             country.subregion ?: "",
-            country.flag ?: "",
             country.currencies?.map { convertCurrencyToDomain(it) } ?: emptyList()
         )
     }

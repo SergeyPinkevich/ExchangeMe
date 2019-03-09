@@ -10,5 +10,5 @@ class NewCurrencyInteractor @Inject constructor(
     private val repository: NewCurrencyRepository
 ) : CountriesListUseCase {
 
-    override fun getCountriesList(): Single<List<Country>> = repository.getCountriesList()
+    override fun getAllCountriesList(): Single<List<Country>> = repository.getCountriesList()
 }

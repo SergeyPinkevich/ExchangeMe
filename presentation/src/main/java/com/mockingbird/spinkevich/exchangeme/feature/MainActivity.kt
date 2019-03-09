@@ -1,13 +1,15 @@
 package com.mockingbird.spinkevich.exchangeme.feature
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.feature.exchange.ExchangeFragment
-import com.mockingbird.spinkevich.exchangeme.feature.start.BF_BASE_COUNTRY
-import com.mockingbird.spinkevich.exchangeme.feature.start.BF_MANUALLY
+import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
+import com.mockingbird.spinkevich.exchangeme.feature.start.StartFragment
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
+import com.mockingbird.spinkevich.exchangeme.utils.putArguments
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,14 +18,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         intent?.let {
-            val fragment = ExchangeFragment()
-            if (it.extras?.containsKey(BF_MANUALLY) == true && !it.getBooleanExtra(BF_MANUALLY, true)) {
-                val country = it.getParcelableExtra<Country>(BF_BASE_COUNTRY)
-                fragment.apply {
-                    arguments = Bundle().apply {
-                        putParcelable(BF_BASE_COUNTRY, country)
-                    }
+            val baseCountry = it.extras?.getParcelable<Country>(BF_BASE_COUNTRY)
+            val fragment: Fragment = if (baseCountry != null) {
+                ExchangeFragment().putArguments {
+                    putParcelable(BF_BASE_COUNTRY, baseCountry)
                 }
+            } else {
+                StartFragment()
             }
             addFragmentToStack(R.id.fragment_container, fragment)
         }

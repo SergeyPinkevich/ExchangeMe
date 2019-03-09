@@ -9,7 +9,6 @@ data class Country(
     val name: String,
     val region: String,
     val subRegion: String,
-    val flag: String,
     val currencies: List<Currency>
 ): Parcelable {
 
