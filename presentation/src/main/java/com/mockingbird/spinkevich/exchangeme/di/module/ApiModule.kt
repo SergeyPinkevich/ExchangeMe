@@ -1,14 +1,14 @@
 package com.mockingbird.spinkevich.exchangeme.di.module
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.mockingbird.spinkevich.data.data.api.service.RatesService
+import com.mockingbird.spinkevich.data.data.api.service.RestService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
-private const val BASE_URL = "http://www.floatrates.com/"
+private const val BASE_URL = "https://exchangeme-api-heroku.herokuapp.com/"
 
 @Module
 class ApiModule {
@@ -25,7 +25,7 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideRateService(retrofit: Retrofit): RatesService {
-        return retrofit.create(RatesService::class.java)
+    fun provideRateService(retrofit: Retrofit): RestService {
+        return retrofit.create(RestService::class.java)
     }
 }

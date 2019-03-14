@@ -3,21 +3,25 @@ package com.mockingbird.spinkevich.data.utils
 import android.content.Context
 import com.google.gson.Gson
 import com.mockingbird.spinkevich.data.entity.CountriesInfo
-import org.json.JSONObject
+import com.mockingbird.spinkevich.data.mapper.RestDataMapper
+import com.mockingbird.spinkevich.domain.entity.Country
 import java.io.IOException
 import javax.inject.Inject
 
-private const val CURRENCY_FILE_NAME = "data.json"
-
-class DataHelper @Inject constructor(
+class JSONHelper @Inject constructor(
     private val context: Context,
     private val gson: Gson
 ) {
 
-    fun getCurrencyLocalInfo(): CountriesInfo? {
+    fun parse(jsonString: String): List<Country> {
+        val info = readJson(jsonString)
+        return info!!.list.map { RestDataMapper.convertToDomain(it) }
+    }
+
+    private fun readJson(jsonString: String): CountriesInfo? {
         val json: String
         try {
-            val inputStream = context.assets?.open(CURRENCY_FILE_NAME)
+            val inputStream = context.assets?.open(jsonString)
             val size = inputStream?.available()
             val buffer = ByteArray(size!!)
             inputStream.read(buffer)
@@ -28,11 +32,5 @@ class DataHelper @Inject constructor(
             e.printStackTrace()
         }
         return null
-    }
-
-    fun parseRate(json: String, currency: String): Double {
-        val jsonObject = JSONObject(json)
-        val currency = jsonObject.getJSONObject(currency)
-        return currency.getDouble("rate")
     }
 }

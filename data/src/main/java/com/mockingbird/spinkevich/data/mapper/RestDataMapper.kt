@@ -5,7 +5,7 @@ import com.mockingbird.spinkevich.data.entity.Currency as CurrencyData
 import com.mockingbird.spinkevich.domain.entity.Country as CountryDomain
 import com.mockingbird.spinkevich.domain.entity.Currency as CurrencyDomain
 
-object NewCurrencyMapper {
+object RestDataMapper {
 
     fun convertToDomain(country: CountryData): CountryDomain {
         return CountryDomain(

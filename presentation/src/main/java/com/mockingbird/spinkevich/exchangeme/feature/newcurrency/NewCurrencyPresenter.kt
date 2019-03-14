@@ -2,7 +2,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
 
 import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
-import com.mockingbird.spinkevich.domain.usecase.CountriesListUseCase
+import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.simplify
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 @InjectViewState
 class NewCurrencyPresenter @Inject constructor(
-    private val countriesListUseCase: CountriesListUseCase
+    private val allCountriesUseCase: AllCountriesUseCase
 ) : BasePresenter<NewCurrencyView>() {
 
     private lateinit var countriesList: List<Country>
 
     fun loadCurrencies() {
         unsubscribeOnDestroy(
-            countriesListUseCase.getAllCountriesList()
+            allCountriesUseCase.getAllCountriesList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {

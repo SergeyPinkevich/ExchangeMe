@@ -52,8 +52,6 @@ dependencies {
             "com.android.support.constraint:constraint-layout:$constraint_version",
             "com.jakewharton.timber:timber:$timber_version"
     )
-
-    implementation 'com.android.support:support-v4:28.0.0'
     kapt(
             "com.google.dagger:dagger-compiler:$dagger_version",
             "com.arello-mobile:moxy-compiler:$moxy_version",

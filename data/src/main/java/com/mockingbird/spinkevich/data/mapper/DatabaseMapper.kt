@@ -8,16 +8,18 @@ object DatabaseMapper {
 
     fun convertToDomain(countryEntity: CountryEntity): Country {
         return Country(
-            countryEntity.code,
-            countryEntity.name,
-            countryEntity.region,
-            countryEntity.subregion,
-            listOf(Currency(countryEntity.currencyCode, countryEntity.currencyName, countryEntity.currencySymbol))
+            code = countryEntity.code,
+            name = countryEntity.name,
+            region = countryEntity.region,
+            subRegion = countryEntity.subregion,
+            currencies = listOf(Currency(countryEntity.currencyCode, countryEntity.currencyName, countryEntity.currencySymbol))
         )
     }
 
-    fun convertToDatabaseEntity(country: Country): CountryEntity {
+    fun convertToDatabaseEntity(country: Country, isBase: Boolean, isConverted: Boolean): CountryEntity {
         return CountryEntity(
+            isBase = isBase,
+            isConverted = isConverted,
             name = country.name,
             code = country.code,
             region = country.region,

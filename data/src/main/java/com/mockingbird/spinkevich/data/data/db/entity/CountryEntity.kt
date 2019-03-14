@@ -8,6 +8,10 @@ import android.arch.persistence.room.PrimaryKey
 data class CountryEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
+    @ColumnInfo(name = "isBase")
+    var isBase: Boolean,
+    @ColumnInfo(name = "isConverted")
+    var isConverted: Boolean,
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "code")

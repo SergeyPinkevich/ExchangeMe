@@ -8,10 +8,16 @@ import android.arch.persistence.room.Query
 import com.mockingbird.spinkevich.data.data.db.entity.CountryEntity
 
 @Dao
-interface ExchangeDao {
+interface CountryDao {
 
-    @Query("SELECT * from countries")
-    fun getAll(): List<CountryEntity>
+    @Query("SELECT * FROM countries")
+    fun getAllCountries(): List<CountryEntity>
+
+    @Query("SELECT * FROM countries WHERE isConverted == 1")
+    fun getConvertedCountries(): List<CountryEntity>
+
+    @Query("SELECT * FROM countries WHERE isBase == 1")
+    fun getBaseCountry(): CountryEntity
 
     @Insert(onConflict = REPLACE)
     fun insert(countryEntity: CountryEntity)

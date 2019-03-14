@@ -1,7 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.di.module
 
-import com.mockingbird.spinkevich.exchangeme.di.module.binder.NewCurrencyBinder
+import com.mockingbird.spinkevich.exchangeme.di.module.binder.CountryBinder
 import dagger.Module
 
-@Module(includes = [NewCurrencyBinder::class, ApplicationModule::class])
+@Module(includes = [CountryBinder::class, ApplicationModule::class])
 class NewCurrencyModule
