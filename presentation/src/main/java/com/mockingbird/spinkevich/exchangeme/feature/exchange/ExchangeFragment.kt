@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -67,6 +68,9 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         currencies_list.adapter = adapter
         currencies_list.layoutManager = LinearLayoutManager(context)
         currencies_list.addItemDecoration(itemDecor)
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+        itemTouchHelper.attachToRecyclerView(currencies_list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
