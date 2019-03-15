@@ -43,10 +43,7 @@ class CountryRepositoryImpl @Inject constructor(
     }
 
     override fun getCountriesList(): Single<List<Country>> {
-        return Single.concat(
-            getCountriesListFromDatabase(),
-            getCountriesListFromNetwork()
-        )
+        return getCountriesListFromNetwork()
     }
 
     override fun getBaseCountry(): Single<Country> {
@@ -76,8 +73,6 @@ class CountryRepositoryImpl @Inject constructor(
     private fun getCountriesListFromNetwork(): Single<List<Country>> {
         return restService.getCountriesList()
             .map { json -> jsonHelper.parse(json) }
-            .doOnSuccess { saveCountriesInDatabase(it) }
-            .doAfterTerminate { print(1) }
     }
 
     private fun saveCountriesInDatabase(country: List<Country>): Completable {

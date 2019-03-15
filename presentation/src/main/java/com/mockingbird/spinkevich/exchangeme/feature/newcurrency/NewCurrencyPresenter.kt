@@ -7,7 +7,6 @@ import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.simplify
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -20,7 +19,6 @@ class NewCurrencyPresenter @Inject constructor(
     fun loadCurrencies() {
         unsubscribeOnDestroy(
             allCountriesUseCase.getAllCountriesList()
-                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
                     countriesList = it
