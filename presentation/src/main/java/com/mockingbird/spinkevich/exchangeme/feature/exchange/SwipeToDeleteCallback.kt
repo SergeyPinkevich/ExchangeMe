@@ -43,7 +43,7 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
             drawBackgroundDelete(itemView, dX, canvas)
             drawBackgroundSwap(itemView, dX, canvas)
             drawIconDelete(itemView, dX, canvas)
-            drawSwapIcon(itemView, dX, canvas)
+            drawIconSwap(itemView, dX, canvas)
         } else {
             super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
@@ -82,19 +82,17 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
     private fun drawIconDelete(itemView: View, dX: Float,canvas: Canvas) {
         val iconTop = itemView.top + (itemView.height - iconDelete.intrinsicHeight - iconHeight) / 2
         val iconBottom = iconTop + iconDelete.intrinsicHeight + iconHeight
-        val iconMargin = (itemView.height - iconDelete.intrinsicHeight - iconWidth) / 2
-        val iconLeft = itemView.right - iconMargin + (dX / 10).toInt() - iconDelete.intrinsicWidth - iconWidth
-        val iconRight = itemView.right - iconMargin + (dX / 10).toInt() + iconWidth
+        val iconLeft = itemView.right + (dX / 5).toInt() + iconDelete.intrinsicWidth - iconWidth
+        val iconRight = itemView.right - iconDelete.intrinsicWidth + iconWidth
         iconDelete.setBounds(iconLeft, iconTop, iconRight, iconBottom)
         iconDelete.draw(canvas)
     }
 
-    private fun drawSwapIcon(itemView: View, dX: Float, canvas: Canvas) {
+    private fun drawIconSwap(itemView: View, dX: Float, canvas: Canvas) {
         val iconTop = itemView.top + (itemView.height - iconSwap.intrinsicHeight - iconHeight) / 2
         val iconBottom = iconTop + iconSwap.intrinsicHeight + iconHeight
-        val iconMargin = (itemView.height - iconSwap.intrinsicHeight - iconWidth) / 2
-        val iconLeft = itemView.right - iconMargin + (dX / 5).toInt() - iconSwap.intrinsicWidth - iconWidth
-        val iconRight = itemView.right - iconMargin + (dX / 5).toInt() + iconWidth
+        val iconLeft = itemView.right + (dX / 5).toInt() + (dX / 5).toInt() + iconSwap.intrinsicWidth - iconWidth
+        val iconRight = itemView.right + (dX / 5).toInt() - iconSwap.intrinsicWidth + iconWidth
         iconSwap.setBounds(iconLeft, iconTop, iconRight, iconBottom)
         iconSwap.draw(canvas)
     }
