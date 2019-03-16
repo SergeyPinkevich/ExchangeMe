@@ -16,12 +16,15 @@ import com.mockingbird.spinkevich.exchangeme.di.graph.StartFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.feature.exchange.ExchangeFragment
 import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
+import com.mockingbird.spinkevich.exchangeme.utils.makeGone
+import com.mockingbird.spinkevich.exchangeme.utils.makeVisible
 import com.mockingbird.spinkevich.exchangeme.utils.putArguments
 import kotlinx.android.synthetic.main.fragment_start.permission_allow_button
 import kotlinx.android.synthetic.main.fragment_start.permission_refuse_button
-import kotlinx.android.synthetic.main.fragment_start.root_layout
+import kotlinx.android.synthetic.main.fragment_start.start_content
+import kotlinx.android.synthetic.main.fragment_start.start_progress
+import kotlinx.android.synthetic.main.fragment_start.start_root_layout
 
-const val BF_MANUALLY = ".manually"
 private const val LOCATION_REQUEST_CODE = 811
 
 class StartFragment : FeatureFragment<StartFragmentGraph>(), StartView {
@@ -77,7 +80,17 @@ class StartFragment : FeatureFragment<StartFragmentGraph>(), StartView {
     }
 
     override fun showUnknownLocationError() {
-        Snackbar.make(root_layout, getString(R.string.error_detect_location), Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(start_root_layout, getString(R.string.error_detect_location), Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun showProgress() {
+        start_content.makeGone()
+        start_progress.makeVisible()
+    }
+
+    override fun hideProgress() {
+        start_content.makeVisible()
+        start_progress.makeGone()
     }
 
     override fun onStop() {

@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.data.utils.location.DetectLocationHelper
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
+import com.mockingbird.spinkevich.exchangeme.utils.addProgress
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,11 +26,12 @@ class StartPresenter @Inject constructor(
         unsubscribeOnDestroy(
             Single.fromCallable { detectLocationHelper.getLocation() }
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { countryCode = getCountryCode(it) }
                 .doOnError { viewState.showUnknownLocationError() }
                 .flatMap { allCountriesUseCase.getAllCountriesList() }
                 .map { list -> list.firstOrNull { it.code == countryCode } }
+                .observeOn(AndroidSchedulers.mainThread())
+                .addProgress(viewState)
                 .subscribeWithTimberError {
                     if (it == null) {
                         viewState.showUnknownLocationError()

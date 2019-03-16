@@ -2,16 +2,17 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
+import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
-import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @InjectViewState
 class ExchangePresenter @Inject constructor(
-    private val ratesUseCase: RatesUseCase,
+    private val baseCountryUseCase: BaseCountryUseCase,
     private val convertedCountriesUseCase: ConvertedCountriesUseCase
 ): BasePresenter<ExchangeView>() {
 
@@ -21,6 +22,11 @@ class ExchangePresenter @Inject constructor(
     fun init(country: Country) {
         isBaseCountryInitialized = true
         viewState.initializeBaseCountry(country)
+        unsubscribeOnDestroy(
+            baseCountryUseCase.addBaseCountry(country)
+                .observeOn(Schedulers.io())
+                .subscribeWithTimberError {}
+        )
         unsubscribeOnDestroy(
             convertedCountriesUseCase.getConvertedCountriesList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -36,14 +42,21 @@ class ExchangePresenter @Inject constructor(
 
     fun addCountry(country: Country) {
         if (!isBaseCountryInitialized) {
-            isBaseCountryInitialized = true
-            viewState.initializeBaseCountry(country)
+            unsubscribeOnDestroy(
+                baseCountryUseCase.addBaseCountry(country)
+                    .subscribeWithTimberError {
+                        isBaseCountryInitialized = true
+                        viewState.initializeBaseCountry(country)
+                    }
+            )
         } else {
-            convertedList.add(country)
             unsubscribeOnDestroy(
                 convertedCountriesUseCase.addConvertedCountry(country)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { viewState.updateCountriesList(convertedList) }
+                    .subscribeWithTimberError {
+                        convertedList.add(country)
+                        viewState.updateCountriesList(convertedList)
+                    }
             )
         }
     }

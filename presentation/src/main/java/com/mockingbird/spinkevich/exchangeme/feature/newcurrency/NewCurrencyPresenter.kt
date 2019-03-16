@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
+import com.mockingbird.spinkevich.exchangeme.utils.addProgress
 import com.mockingbird.spinkevich.exchangeme.utils.simplify
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +21,7 @@ class NewCurrencyPresenter @Inject constructor(
         unsubscribeOnDestroy(
             allCountriesUseCase.getAllCountriesList()
                 .observeOn(AndroidSchedulers.mainThread())
+                .addProgress(viewState)
                 .subscribeWithTimberError {
                     countriesList = it
                     viewState.showCountriesList(it)

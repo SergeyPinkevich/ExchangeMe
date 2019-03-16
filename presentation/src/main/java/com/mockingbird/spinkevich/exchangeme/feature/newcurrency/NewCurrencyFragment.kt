@@ -16,8 +16,11 @@ import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.core.feature.fragment.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
+import com.mockingbird.spinkevich.exchangeme.utils.makeGone
+import com.mockingbird.spinkevich.exchangeme.utils.makeVisible
 import com.mockingbird.spinkevich.exchangeme.utils.onQueryTextChange
 import kotlinx.android.synthetic.main.fragment_new_currency.currencies_list
+import kotlinx.android.synthetic.main.fragment_new_currency.new_currency_progress
 
 const val NEW_COUNTRY_REQUEST_CODE = 1492
 const val BF_NEW_COUNTRY = ".new.currency"
@@ -78,6 +81,16 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     override fun showCountriesList(currenciesList: List<Country>) {
         val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }
         adapter.submitList(filterList)
+    }
+
+    override fun showProgress() {
+        new_currency_progress.makeVisible()
+        currencies_list.makeGone()
+    }
+
+    override fun hideProgress() {
+        new_currency_progress.makeGone()
+        currencies_list.makeVisible()
     }
 
     private fun checkIfCountryHasFlag(country: Country): Boolean {

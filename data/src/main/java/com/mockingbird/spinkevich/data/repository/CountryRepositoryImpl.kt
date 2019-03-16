@@ -73,9 +73,17 @@ class CountryRepositoryImpl @Inject constructor(
     private fun getCountriesListFromNetwork(): Single<List<Country>> {
         return restService.getCountriesList()
             .map { json -> jsonHelper.parse(json) }
+            .doOnSuccess { saveCountriesInDatabase(it).subscribe() }
+            .onErrorReturn { getCountriesListFromDatabase().blockingGet() }
     }
 
-    private fun saveCountriesInDatabase(country: List<Country>): Completable {
-        return Completable.fromCallable {  }
+    private fun saveCountriesInDatabase(countriesList: List<Country>): Completable {
+        return Completable.fromCallable {
+            countriesList.forEach {
+                countryDao.insert(
+                    DatabaseMapper.convertToDatabaseEntity(it, isBase = false, isConverted = false)
+                )
+            }
+        }
     }
 }

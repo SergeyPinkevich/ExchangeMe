@@ -15,7 +15,8 @@ class CountryInteractor @Inject constructor(
 ) : BaseCountryUseCase, AllCountriesUseCase, ConvertedCountriesUseCase {
 
     override fun addBaseCountry(country: Country): Completable {
-        return Completable.complete()
+        return countryRepository.addBaseCountry(country)
+            .subscribeOn(Schedulers.io())
     }
 
     override fun getBaseCountry(): Single<Country> {
