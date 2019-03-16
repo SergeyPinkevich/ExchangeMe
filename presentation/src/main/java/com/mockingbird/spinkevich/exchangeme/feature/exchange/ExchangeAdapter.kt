@@ -1,6 +1,5 @@
 package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
-import android.content.Context
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,13 +14,6 @@ import kotlinx.android.synthetic.main.exchange_currency_item.view.exchange_curre
 import kotlinx.android.synthetic.main.exchange_currency_item.view.exchange_currency_name
 
 class ExchangeAdapter : ListAdapter<Country, ExchangeAdapter.ViewHolder>(CountryDiffUtil) {
-
-    lateinit var context: Context
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        context = recyclerView.context
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.exchange_currency_item, parent, false))

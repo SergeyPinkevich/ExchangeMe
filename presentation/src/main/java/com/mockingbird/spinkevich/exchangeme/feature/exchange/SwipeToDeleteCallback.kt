@@ -9,14 +9,9 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import com.mockingbird.spinkevich.exchangeme.R
 
-class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-
-    private val resources = adapter.context.resources
-
-    private val iconSwap = resources.getDrawable(R.drawable.ic_swap)
-    private val iconDelete = resources.getDrawable(R.drawable.ic_delete)
-    private val backgroundSwap = ColorDrawable(resources.getColor(R.color.blue))
-    private val backgroundDelete = ColorDrawable(resources.getColor(R.color.red))
+class SwipeToDeleteCallback(
+    private val deleteCallback: (Int) -> Unit
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
     private val iconHeight = 30
     private val iconWidth = 15
@@ -25,9 +20,7 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
         return false
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
-    }
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
 
     override fun onChildDraw(
         canvas: Canvas,
@@ -40,6 +33,7 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
     ) {
         if (actionState === ItemTouchHelper.ACTION_STATE_SWIPE) {
             val itemView = viewHolder.itemView
+
             drawBackgroundDelete(itemView, dX, canvas)
             drawBackgroundSwap(itemView, dX, canvas)
             drawIconDelete(itemView, dX, canvas)
@@ -54,7 +48,8 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
         itemView.translationX = swipeValue
 
         val paint = Paint()
-        paint.color = backgroundDelete.color
+        val backgroundColor = ColorDrawable(itemView.resources.getColor(R.color.red))
+        paint.color = backgroundColor.color
         val background = RectF(
             itemView.right.toFloat() + swipeValue,
             itemView.top.toFloat(),
@@ -69,7 +64,8 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
         itemView.translationX = swipeValue
 
         val paint = Paint()
-        paint.color = backgroundSwap.color
+        val backgroundColor = ColorDrawable(itemView.resources.getColor(R.color.blue))
+        paint.color = backgroundColor.color
         val background = RectF(
             itemView.right.toFloat() + swipeValue,
             itemView.top.toFloat(),
@@ -80,20 +76,22 @@ class SwipeToDeleteCallback(private val adapter: ExchangeAdapter) : ItemTouchHel
     }
 
     private fun drawIconDelete(itemView: View, dX: Float,canvas: Canvas) {
-        val iconTop = itemView.top + (itemView.height - iconDelete.intrinsicHeight - iconHeight) / 2
-        val iconBottom = iconTop + iconDelete.intrinsicHeight + iconHeight
-        val iconLeft = itemView.right + (dX / 5).toInt() + iconDelete.intrinsicWidth - iconWidth
-        val iconRight = itemView.right - iconDelete.intrinsicWidth + iconWidth
-        iconDelete.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        iconDelete.draw(canvas)
+        val icon = itemView.resources.getDrawable(R.drawable.ic_delete)
+        val iconTop = itemView.top + (itemView.height - icon.intrinsicHeight - iconHeight) / 2
+        val iconBottom = iconTop + icon.intrinsicHeight + iconHeight
+        val iconLeft = itemView.right + (dX / 5).toInt() + icon.intrinsicWidth - iconWidth
+        val iconRight = itemView.right - icon.intrinsicWidth + iconWidth
+        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+        icon.draw(canvas)
     }
 
     private fun drawIconSwap(itemView: View, dX: Float, canvas: Canvas) {
-        val iconTop = itemView.top + (itemView.height - iconSwap.intrinsicHeight - iconHeight) / 2
-        val iconBottom = iconTop + iconSwap.intrinsicHeight + iconHeight
-        val iconLeft = itemView.right + (dX / 5).toInt() + (dX / 5).toInt() + iconSwap.intrinsicWidth - iconWidth
-        val iconRight = itemView.right + (dX / 5).toInt() - iconSwap.intrinsicWidth + iconWidth
-        iconSwap.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        iconSwap.draw(canvas)
+        val icon = itemView.resources.getDrawable(R.drawable.ic_swap)
+        val iconTop = itemView.top + (itemView.height - icon.intrinsicHeight - iconHeight) / 2
+        val iconBottom = iconTop + icon.intrinsicHeight + iconHeight
+        val iconLeft = itemView.right + (dX / 5).toInt() + (dX / 5).toInt() + icon.intrinsicWidth - iconWidth
+        val iconRight = itemView.right + (dX / 5).toInt() - icon.intrinsicWidth + iconWidth
+        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+        icon.draw(canvas)
     }
 }

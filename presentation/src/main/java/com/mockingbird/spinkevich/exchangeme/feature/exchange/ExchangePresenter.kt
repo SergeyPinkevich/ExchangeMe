@@ -60,4 +60,16 @@ class ExchangePresenter @Inject constructor(
             )
         }
     }
+
+    fun removeCountry(position: Int) {
+        val country = convertedList[position]
+        unsubscribeOnDestroy(
+            convertedCountriesUseCase.deleteConvertedCountry(country)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithTimberError {
+                    convertedList.remove(country)
+                    viewState.updateCountriesList(convertedList)
+                }
+        )
+    }
 }
