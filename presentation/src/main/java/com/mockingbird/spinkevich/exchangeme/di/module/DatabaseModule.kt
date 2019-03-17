@@ -7,6 +7,8 @@ import com.mockingbird.spinkevich.data.data.db.dao.CountryDao
 import dagger.Module
 import dagger.Provides
 
+private const val DATABASE_NAME = "exchange.db"
+
 @Module
 class DatabaseModule {
 
@@ -15,7 +17,7 @@ class DatabaseModule {
         return Room.databaseBuilder(
             context,
             ExchangeDatabase::class.java,
-            "exchange.db")
+            DATABASE_NAME)
             .build()
     }
 

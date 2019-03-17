@@ -69,7 +69,7 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         currencies_list.layoutManager = LinearLayoutManager(context)
         currencies_list.addItemDecoration(itemDecor)
 
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback { position -> presenter.removeCountry(position) })
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback())
         itemTouchHelper.attachToRecyclerView(currencies_list)
     }
 

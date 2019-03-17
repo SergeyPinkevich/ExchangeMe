@@ -9,9 +9,10 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import com.mockingbird.spinkevich.exchangeme.R
 
-class SwipeToDeleteCallback(
-    private val deleteCallback: (Int) -> Unit
-) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+    var deleteCallback: ((Int) -> Unit)? = null
+    var swapCallback: ((Int) -> Unit)? = null
 
     private val iconHeight = 30
     private val iconWidth = 15
@@ -31,7 +32,7 @@ class SwipeToDeleteCallback(
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        if (actionState === ItemTouchHelper.ACTION_STATE_SWIPE) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val itemView = viewHolder.itemView
 
             drawBackgroundDelete(itemView, dX, canvas)

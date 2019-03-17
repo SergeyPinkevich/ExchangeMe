@@ -5,13 +5,15 @@ import com.mockingbird.spinkevich.domain.repository.CountryRepository
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
+import com.mockingbird.spinkevich.domain.usecase.UpdateUseCase
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CountryInteractor @Inject constructor(
-    private val countryRepository: CountryRepository
+    private val countryRepository: CountryRepository,
+    private val updateUseCase: UpdateUseCase
 ) : BaseCountryUseCase, AllCountriesUseCase, ConvertedCountriesUseCase {
 
     override fun addBaseCountry(country: Country): Completable {
@@ -25,8 +27,11 @@ class CountryInteractor @Inject constructor(
     }
 
     override fun getAllCountriesList(): Single<List<Country>> {
-        return countryRepository.getCountriesList()
-            .subscribeOn(Schedulers.io())
+        return if (updateUseCase.isNeedUpdate()) {
+            countryRepository.getCountriesListFromNetwork()
+        } else {
+            countryRepository.getCountriesListFromDatabase()
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun getConvertedCountriesList(): Single<List<Country>> {

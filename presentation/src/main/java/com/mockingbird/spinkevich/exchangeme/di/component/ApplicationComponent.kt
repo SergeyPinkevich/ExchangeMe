@@ -12,6 +12,7 @@ import com.mockingbird.spinkevich.exchangeme.di.module.DatabaseModule
 import com.mockingbird.spinkevich.exchangeme.di.module.ExchangeModule
 import com.mockingbird.spinkevich.exchangeme.di.module.NewCurrencyModule
 import com.mockingbird.spinkevich.exchangeme.di.module.StartModule
+import com.mockingbird.spinkevich.exchangeme.di.module.UpdateModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,7 +23,8 @@ import javax.inject.Singleton
     NewCurrencyModule::class,
     ExchangeModule::class,
     ApiModule::class,
-    DatabaseModule::class
+    DatabaseModule::class,
+    UpdateModule::class
 ])
 interface ApplicationComponent {
 

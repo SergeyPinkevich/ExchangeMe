@@ -8,14 +8,17 @@ import com.mockingbird.spinkevich.data.utils.JSONHelper
 import com.mockingbird.spinkevich.data.utils.Optional
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.repository.CountryRepository
+import com.mockingbird.spinkevich.domain.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Single
+import java.util.Calendar
 import javax.inject.Inject
 
 class CountryRepositoryImpl @Inject constructor(
     private val countryDao: CountryDao,
     private val restService: RestService,
-    private val jsonHelper: JSONHelper
+    private val jsonHelper: JSONHelper,
+    private val updateRepository: UpdateRepository
 ) : CountryRepository {
 
     override fun addCountry(country: Country): Completable {
@@ -42,10 +45,6 @@ class CountryRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCountriesList(): Single<List<Country>> {
-        return getCountriesListFromNetwork()
-    }
-
     override fun getBaseCountry(): Single<Country> {
         return Single.fromCallable { Optional(countryDao.getBaseCountry()) }
             .map { baseCountry ->
@@ -63,17 +62,20 @@ class CountryRepositoryImpl @Inject constructor(
             }
     }
 
-    private fun getCountriesListFromDatabase(): Single<List<Country>> {
+    override fun getCountriesListFromDatabase(): Single<List<Country>> {
         return Single.fromCallable { Optional(countryDao.getAllCountries()) }
             .map { optionalList ->
                 optionalList.value?.map { DatabaseMapper.convertToDomain(it) }
             }
     }
 
-    private fun getCountriesListFromNetwork(): Single<List<Country>> {
+    override fun getCountriesListFromNetwork(): Single<List<Country>> {
         return restService.getCountriesList()
             .map { json -> jsonHelper.parse(json) }
-            .doOnSuccess { saveCountriesInDatabase(it).subscribe() }
+            .doOnSuccess {
+                saveCountriesInDatabase(it).subscribe()
+                updateRepository.setLastTimeUpdate(Calendar.getInstance().timeInMillis)
+            }
             .onErrorReturn { getCountriesListFromDatabase().blockingGet() }
     }
 

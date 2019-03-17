@@ -31,6 +31,7 @@ class ExchangePresenter @Inject constructor(
             convertedCountriesUseCase.getConvertedCountriesList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
+                    convertedList.addAll(it)
                     viewState.updateCountriesList(it)
                 }
         )
