@@ -1,6 +1,5 @@
 package com.mockingbird.spinkevich.exchangeme.utils
 
-import android.support.v7.widget.SearchView
 import com.mockingbird.spinkevich.exchangeme.core.ShowHideProgress
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -13,19 +12,6 @@ fun <T> Single<T>.subscribeWithTimberError(action: (T) -> Unit): Disposable {
 
 fun Completable.subscribeWithTimberError(action: () -> Unit): Disposable {
     return this.subscribe({ action.invoke() }, { Timber.e(it) })
-}
-
-fun SearchView.onQueryTextChange(onQueryTextChange: (String) -> Unit) {
-    this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-        override fun onQueryTextChange(query: String): Boolean {
-            onQueryTextChange.invoke(query)
-            return true
-        }
-
-        override fun onQueryTextSubmit(query: String): Boolean {
-            return false
-        }
-    })
 }
 
 fun <T> Single<T>.addProgress(showAndHideView: ShowHideProgress): Single<T> {

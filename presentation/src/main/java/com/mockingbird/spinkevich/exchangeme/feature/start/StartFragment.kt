@@ -3,7 +3,6 @@ package com.mockingbird.spinkevich.exchangeme.feature.start
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -50,7 +49,7 @@ class StartFragment : FeatureFragment<StartFragmentGraph>(), StartView {
 
     private fun requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
         } else {
             presenter.locationPermissionWasGranted()
         }

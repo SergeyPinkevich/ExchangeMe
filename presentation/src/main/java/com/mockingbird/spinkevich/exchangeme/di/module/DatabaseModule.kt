@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.mockingbird.spinkevich.data.data.db.ExchangeDatabase
 import com.mockingbird.spinkevich.data.data.db.dao.CountryDao
+import com.mockingbird.spinkevich.data.data.db.dao.CurrencyDao
 import dagger.Module
 import dagger.Provides
 
@@ -22,5 +23,8 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providesExchangeDao(database: ExchangeDatabase): CountryDao = database.exchangeDao()
+    fun providesCountryDao(database: ExchangeDatabase): CountryDao = database.countryDao()
+
+    @Provides
+    fun providesCurrencyDao(database: ExchangeDatabase): CurrencyDao = database.currencyDao()
 }

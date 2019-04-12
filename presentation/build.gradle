@@ -50,7 +50,9 @@ dependencies {
             "com.arello-mobile:moxy-app-compat:$moxy_version",
 
             "com.android.support.constraint:constraint-layout:$constraint_version",
-            "com.jakewharton.timber:timber:$timber_version"
+            "com.jakewharton.timber:timber:$timber_version",
+
+            "com.daimajia.swipelayout:library:$swipe_layout"
     )
     kapt(
             "com.google.dagger:dagger-compiler:$dagger_version",

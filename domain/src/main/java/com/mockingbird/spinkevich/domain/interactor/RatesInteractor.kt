@@ -10,8 +10,8 @@ class RatesInteractor @Inject constructor(
     private val ratesRepository: RatesRepository
 ): RatesUseCase {
 
-    override fun getCurrentRatesByCode(currency: String): Single<String> {
-        return ratesRepository.getCurrentRates(currency)
+    override fun getCurrentRates(): Single<String> {
+        return ratesRepository.getCurrentRates()
             .subscribeOn(Schedulers.io())
     }
 }

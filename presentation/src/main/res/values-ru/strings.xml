@@ -2,10 +2,12 @@
 <resources>
     <string name="app_name">ExchangeMe</string>
     <string name="search_menu_title">Поиск</string>
+    <string name="retry">Повторить</string>
 
     <!-- New currency screen -->
     <string name="add_menu_title">Добавить валюту</string>
     <string name="search_field_hint">Валюта или страна</string>
+    <string name="load_currencies_error">Не удалось загрузить список валют</string>
 
     <!-- Start screen -->
     <string name="title_permission">Пожалуйста, дайте доступ к местоположению</string>

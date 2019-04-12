@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "countries")
-data class CountryEntity(
+data class CountrySchema(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
     @ColumnInfo(name = "isBase")
@@ -20,12 +20,6 @@ data class CountryEntity(
     var region: String,
     @ColumnInfo(name = "subregion")
     var subregion: String,
-    @ColumnInfo(name = "amount")
-    var amount: Int,
-    @ColumnInfo(name = "currencyName")
-    var currencyName: String,
-    @ColumnInfo(name = "currencyCode")
-    var currencyCode: String,
-    @ColumnInfo(name = "currencySymbol")
-    var currencySymbol: String
+    @ColumnInfo(name = "currency")
+    var currency: String
 )

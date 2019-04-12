@@ -6,7 +6,6 @@ import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.addProgress
 import com.mockingbird.spinkevich.exchangeme.utils.simplify
-import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -22,10 +21,12 @@ class NewCurrencyPresenter @Inject constructor(
             allCountriesUseCase.getAllCountriesList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .addProgress(viewState)
-                .subscribeWithTimberError {
+                .subscribe({
                     countriesList = it
                     viewState.showCountriesList(it)
-                }
+                }, {
+                    viewState.showError()
+                })
         )
     }
 

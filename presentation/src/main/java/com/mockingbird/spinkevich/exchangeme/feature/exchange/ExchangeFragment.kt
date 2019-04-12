@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -22,6 +21,7 @@ import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NEW_COUNTRY_REQ
 import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NewCurrencyFragment
 import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
+import com.mockingbird.spinkevich.exchangeme.utils.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_amount
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_code
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_flag
@@ -62,15 +62,12 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ExchangeAdapter()
+        adapter = ExchangeAdapter({ presenter.deleteCountry(it) }, {})
         val itemDecor = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
 
         currencies_list.adapter = adapter
         currencies_list.layoutManager = LinearLayoutManager(context)
         currencies_list.addItemDecoration(itemDecor)
-
-        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback())
-        itemTouchHelper.attachToRecyclerView(currencies_list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -96,6 +93,11 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         base_currency_code.text = currency?.code
         base_currency_amount.setText("0")
         base_currency_name.text = "${currency?.name} ${currency?.symbol}"
+        base_currency_amount.afterTextChanged {
+            if (it.isEmpty()) {
+                base_currency_amount.setText("0")
+            }
+        }
     }
 
     override fun openNewCurrencyScreen() {
@@ -104,7 +106,8 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         requireActivity().addFragmentToStack(R.id.fragment_container, fragment)
     }
 
-    override fun updateCountriesList(country: List<Country>) {
-        adapter.submitList(country)
+    override fun updateConvertedCountriesList(convertedCountries: List<Country>) {
+        adapter.submitList(convertedCountries)
+        adapter.notifyDataSetChanged()
     }
 }

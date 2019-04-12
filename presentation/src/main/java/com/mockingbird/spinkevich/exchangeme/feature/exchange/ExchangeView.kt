@@ -15,5 +15,5 @@ interface ExchangeView : MvpView {
     fun openNewCurrencyScreen()
 
     @StateStrategyType(AddToEndSingleStrategy::class)
-    fun updateCountriesList(country: List<Country>)
+    fun updateConvertedCountriesList(convertedCountries: List<Country>)
 }

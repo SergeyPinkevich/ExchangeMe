@@ -7,4 +7,6 @@ import com.mockingbird.spinkevich.exchangeme.core.ShowHideProgress
 interface NewCurrencyView : MvpView, ShowHideProgress {
 
     fun showCountriesList(currenciesList: List<Country>)
+
+    fun showError()
 }

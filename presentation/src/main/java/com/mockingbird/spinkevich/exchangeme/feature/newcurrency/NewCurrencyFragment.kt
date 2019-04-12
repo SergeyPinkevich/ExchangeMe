@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
 import android.app.Activity
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -81,6 +82,12 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     override fun showCountriesList(currenciesList: List<Country>) {
         val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }
         adapter.submitList(filterList)
+    }
+
+    override fun showError() {
+        val snackbar = Snackbar.make(currencies_list, R.string.load_currencies_error, Snackbar.LENGTH_LONG)
+        snackbar.setAction(R.string.retry) { presenter.loadCurrencies() }
+        snackbar.show()
     }
 
     override fun showProgress() {

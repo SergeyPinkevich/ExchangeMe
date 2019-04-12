@@ -1,33 +1,48 @@
 package com.mockingbird.spinkevich.data.mapper
 
-import com.mockingbird.spinkevich.data.data.db.entity.CountryEntity
+import com.mockingbird.spinkevich.data.data.db.entity.CountrySchema
+import com.mockingbird.spinkevich.data.data.db.entity.CurrencySchema
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Currency
 
 object DatabaseMapper {
 
-    fun convertToDomain(countryEntity: CountryEntity): Country {
+    fun convertCountryToDomain(countrySchema: CountrySchema, currency: CurrencySchema): Country {
         return Country(
-            code = countryEntity.code,
-            name = countryEntity.name,
-            region = countryEntity.region,
-            subRegion = countryEntity.subregion,
-            currencies = listOf(Currency(countryEntity.currencyCode, countryEntity.currencyName, countryEntity.currencySymbol))
+            code = countrySchema.code,
+            name = countrySchema.name,
+            region = countrySchema.region,
+            subRegion = countrySchema.subregion,
+            currencies = listOf(convertCurrencyToDomain(currency))
         )
     }
 
-    fun convertToDatabaseEntity(country: Country, isBase: Boolean, isConverted: Boolean): CountryEntity {
-        return CountryEntity(
+    fun convertToDatabaseEntity(country: Country, isBase: Boolean, isConverted: Boolean): CountrySchema {
+        return CountrySchema(
             isBase = isBase,
             isConverted = isConverted,
             name = country.name,
             code = country.code,
             region = country.region,
             subregion = country.subRegion,
-            amount = 10,
-            currencyCode = country.currencies.first().code,
-            currencyName = country.currencies.first().name,
-            currencySymbol = country.currencies.first().symbol
+            currency = country.currencies.first().code
+        )
+    }
+
+    fun convertCurrencyToDatabaseEntity(currency: Currency): CurrencySchema {
+        return CurrencySchema(
+            id = currency.code,
+            code = currency.code,
+            name = currency.name,
+            symbol = currency.symbol
+        )
+    }
+
+    private fun convertCurrencyToDomain(currencySchema: CurrencySchema): Currency {
+        return Currency(
+            code = currencySchema.code,
+            name = currencySchema.name,
+            symbol = currencySchema.symbol
         )
     }
 }

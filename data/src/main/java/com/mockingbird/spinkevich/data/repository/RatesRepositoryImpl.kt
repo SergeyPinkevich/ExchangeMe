@@ -11,7 +11,7 @@ class RatesRepositoryImpl @Inject constructor(
     private val countryDao: CountryDao
 ) : RatesRepository {
 
-    override fun getCurrentRates(currency: String): Single<String> {
-        return service.getCurrentRates(currency)
+    override fun getCurrentRates(): Single<String> {
+        return service.getCurrentRates()
     }
 }

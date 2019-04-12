@@ -4,5 +4,5 @@ import io.reactivex.Single
 
 interface RatesRepository {
 
-    fun getCurrentRates(currency: String): Single<String>
+    fun getCurrentRates(): Single<String>
 }

@@ -1,27 +1,27 @@
 package com.mockingbird.spinkevich.data.data.db.dao
 
 import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
-import com.mockingbird.spinkevich.data.data.db.entity.CountryEntity
+import android.arch.persistence.room.Update
+import com.mockingbird.spinkevich.data.data.db.entity.CountrySchema
 
 @Dao
 interface CountryDao {
 
     @Query("SELECT * FROM countries")
-    fun getAllCountries(): List<CountryEntity>
+    fun getAllCountries(): List<CountrySchema>
 
     @Query("SELECT * FROM countries WHERE isConverted == 1")
-    fun getConvertedCountries(): List<CountryEntity>
+    fun getConvertedCountries(): List<CountrySchema>
 
     @Query("SELECT * FROM countries WHERE isBase == 1")
-    fun getBaseCountry(): CountryEntity
+    fun getBaseCountry(): CountrySchema?
 
     @Insert(onConflict = REPLACE)
-    fun insert(countryEntity: CountryEntity)
+    fun insert(countrySchema: CountrySchema)
 
-    @Delete
-    fun delete(countryEntity: CountryEntity)
+    @Update
+    fun update(countrySchema: CountrySchema)
 }

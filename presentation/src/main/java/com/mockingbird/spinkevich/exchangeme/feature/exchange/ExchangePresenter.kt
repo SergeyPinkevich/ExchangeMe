@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
+import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,17 +14,32 @@ import javax.inject.Inject
 @InjectViewState
 class ExchangePresenter @Inject constructor(
     private val baseCountryUseCase: BaseCountryUseCase,
-    private val convertedCountriesUseCase: ConvertedCountriesUseCase
+    private val convertedCountriesUseCase: ConvertedCountriesUseCase,
+    private val ratesUseCase: RatesUseCase
 ): BasePresenter<ExchangeView>() {
 
     private var isBaseCountryInitialized = false
     private var convertedList: MutableList<Country> = mutableListOf()
 
-    fun init(country: Country) {
-        isBaseCountryInitialized = true
-        viewState.initializeBaseCountry(country)
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        observeRates()
+    }
+
+    private fun observeRates() {
         unsubscribeOnDestroy(
-            baseCountryUseCase.addBaseCountry(country)
+            ratesUseCase.getCurrentRates()
+                .subscribeWithTimberError {
+
+                }
+        )
+    }
+
+    fun init(baseCountry: Country) {
+        isBaseCountryInitialized = true
+        viewState.initializeBaseCountry(baseCountry)
+        unsubscribeOnDestroy(
+            baseCountryUseCase.addBaseCountry(baseCountry)
                 .observeOn(Schedulers.io())
                 .subscribeWithTimberError {}
         )
@@ -32,7 +48,7 @@ class ExchangePresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
                     convertedList.addAll(it)
-                    viewState.updateCountriesList(it)
+                    viewState.updateConvertedCountriesList(it)
                 }
         )
     }
@@ -56,20 +72,19 @@ class ExchangePresenter @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWithTimberError {
                         convertedList.add(country)
-                        viewState.updateCountriesList(convertedList)
+                        viewState.updateConvertedCountriesList(convertedList)
                     }
             )
         }
     }
 
-    fun removeCountry(position: Int) {
-        val country = convertedList[position]
+    fun deleteCountry(country: Country) {
         unsubscribeOnDestroy(
             convertedCountriesUseCase.deleteConvertedCountry(country)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
                     convertedList.remove(country)
-                    viewState.updateCountriesList(convertedList)
+                    viewState.updateConvertedCountriesList(convertedList)
                 }
         )
     }
