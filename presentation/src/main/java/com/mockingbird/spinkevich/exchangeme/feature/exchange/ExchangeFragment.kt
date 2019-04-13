@@ -62,7 +62,7 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ExchangeAdapter({ presenter.deleteCountry(it) }, {})
+        adapter = ExchangeAdapter({ presenter.deleteCountry(it) }, { presenter.swapCountryWithBase(it) })
         val itemDecor = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
 
         currencies_list.adapter = adapter

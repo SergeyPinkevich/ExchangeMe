@@ -6,8 +6,8 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "countries")
 data class CountrySchema(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null,
+    @PrimaryKey
+    var id: Int,
     @ColumnInfo(name = "isBase")
     var isBase: Boolean,
     @ColumnInfo(name = "isConverted")

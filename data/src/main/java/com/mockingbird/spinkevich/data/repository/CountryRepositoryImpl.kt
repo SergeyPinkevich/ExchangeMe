@@ -31,13 +31,13 @@ class CountryRepositoryImpl @Inject constructor(
 
     override fun addBaseCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.insert(DatabaseMapper.convertToDatabaseEntity(country, isBase = true, isConverted = false))
+            countryDao.update(DatabaseMapper.convertToDatabaseEntity(country, isBase = true, isConverted = false))
         }
     }
 
     override fun addConvertedCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.insert(DatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = true))
+            countryDao.update(DatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = true))
         }
     }
 

@@ -8,7 +8,6 @@ import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @InjectViewState
@@ -36,13 +35,22 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun init(baseCountry: Country) {
+        initBaseCountry(baseCountry)
+        observeConvertedCountries()
+    }
+
+    private fun initBaseCountry(baseCountry: Country) {
         isBaseCountryInitialized = true
-        viewState.initializeBaseCountry(baseCountry)
         unsubscribeOnDestroy(
             baseCountryUseCase.addBaseCountry(baseCountry)
-                .observeOn(Schedulers.io())
-                .subscribeWithTimberError {}
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithTimberError {
+                    viewState.initializeBaseCountry(baseCountry)
+                }
         )
+    }
+
+    private fun observeConvertedCountries() {
         unsubscribeOnDestroy(
             convertedCountriesUseCase.getConvertedCountriesList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,6 +92,21 @@ class ExchangePresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
                     convertedList.remove(country)
+                    viewState.updateConvertedCountriesList(convertedList)
+                }
+        )
+    }
+
+    fun swapCountryWithBase(country: Country) {
+        unsubscribeOnDestroy(
+            baseCountryUseCase.getBaseCountry()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithTimberError { baseCountry ->
+                    convertedList.remove(country)
+                    convertedList.add(baseCountry)
+                    initBaseCountry(country)
+
+                    convertedCountriesUseCase.addConvertedCountry(baseCountry).subscribe()
                     viewState.updateConvertedCountriesList(convertedList)
                 }
         )

@@ -80,7 +80,7 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     }
 
     override fun showCountriesList(currenciesList: List<Country>) {
-        val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }
+        val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }.sortedWith(compareBy {it.name})
         adapter.submitList(filterList)
     }
 
