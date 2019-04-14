@@ -1,6 +1,6 @@
 package com.mockingbird.spinkevich.data.repository.impl
 
-import com.mockingbird.spinkevich.data.mapper.DatabaseMapper
+import com.mockingbird.spinkevich.data.mapper.db.CountryDatabaseMapper
 import com.mockingbird.spinkevich.data.repository.CountryRepository
 import com.mockingbird.spinkevich.data.repository.UpdateRepository
 import com.mockingbird.spinkevich.data.source.api.service.RestService
@@ -24,26 +24,26 @@ class CountryRepositoryImpl @Inject constructor(
 
     override fun addCountry(country: Country): Completable {
         return Completable.fromCallable {
-            currencyDao.insert(DatabaseMapper.convertCurrencyToDatabaseEntity(country.currencies.first()))
-            countryDao.insert(DatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
+            currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(country.currencies.first()))
+            countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
         }
     }
 
     override fun addBaseCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(DatabaseMapper.convertToDatabaseEntity(country, isBase = true, isConverted = false))
+            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = true, isConverted = false))
         }
     }
 
     override fun addConvertedCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(DatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = true))
+            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = true))
         }
     }
 
     override fun deleteConvertedCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(DatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
+            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
         }
     }
 
@@ -53,7 +53,7 @@ class CountryRepositoryImpl @Inject constructor(
                 return@flatMap Single.fromCallable { currencyDao.getCurrency(baseCountry.currency) }
                     .map { return@map Pair(baseCountry, it) }
             }
-            .map { DatabaseMapper.convertCountryToDomain(it.first, it.second) }
+            .map { CountryDatabaseMapper.convertCountryToDomain(it.first, it.second) }
     }
 
     override fun getConvertedCountriesList(): Single<List<Country>> {
@@ -71,7 +71,7 @@ class CountryRepositoryImpl @Inject constructor(
                 val countriesDomain = mutableListOf<Country>()
                 for (i in 0 until countryList.size) {
                     countriesDomain.add(
-                        DatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
+                        CountryDatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
                     )
                 }
                 countriesDomain
@@ -93,7 +93,7 @@ class CountryRepositoryImpl @Inject constructor(
                 val countriesDomain = mutableListOf<Country>()
                 for (i in 0 until countryList.size) {
                     countriesDomain.add(
-                        DatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
+                        CountryDatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
                     )
                 }
                 countriesDomain
@@ -102,7 +102,7 @@ class CountryRepositoryImpl @Inject constructor(
 
     override fun getCountriesListFromNetwork(): Single<List<Country>> {
         return restService.getCountriesList()
-            .map { json -> jsonHelper.parse(json) }
+            .map { json -> jsonHelper.parseCountries(json) }
             .doOnSuccess {
                 saveCountriesInDatabase(it).subscribe()
                 updateRepository.setLastTimeUpdate(Calendar.getInstance().timeInMillis)
@@ -113,8 +113,8 @@ class CountryRepositoryImpl @Inject constructor(
     private fun saveCountriesInDatabase(countriesList: List<Country>): Completable {
         return Completable.fromCallable {
             countriesList.forEach {
-                currencyDao.insert(DatabaseMapper.convertCurrencyToDatabaseEntity(it.currencies.first()))
-                countryDao.insert(DatabaseMapper.convertToDatabaseEntity(it, isBase = false, isConverted = false))
+                currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(it.currencies.first()))
+                countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(it, isBase = false, isConverted = false))
             }
         }
     }

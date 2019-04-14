@@ -2,6 +2,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
+import com.mockingbird.spinkevich.domain.entity.Rate
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
@@ -19,6 +20,7 @@ class ExchangePresenter @Inject constructor(
 
     private var isBaseCountryInitialized = false
     private var convertedList: MutableList<Country> = mutableListOf()
+    private var ratesList: MutableList<Rate> = mutableListOf()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -28,8 +30,9 @@ class ExchangePresenter @Inject constructor(
     private fun observeRates() {
         unsubscribeOnDestroy(
             ratesUseCase.getCurrentRates()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
-
+                    ratesList = it.toMutableList()
                 }
         )
     }

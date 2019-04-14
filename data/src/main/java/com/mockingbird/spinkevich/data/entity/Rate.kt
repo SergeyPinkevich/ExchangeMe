@@ -2,11 +2,14 @@ package com.mockingbird.spinkevich.data.entity
 
 import com.google.gson.annotations.SerializedName
 
+data class RateResponse(
+    @SerializedName("rates")
+    val rates: List<Rate>
+)
+
 data class Rate(
-    @SerializedName("code")
-    val code: String,
+    @SerializedName("currency")
+    val currency: String?,
     @SerializedName("rate")
-    val rate: Float,
-    @SerializedName("inverseRate")
-    val inverseRate: Float
+    val rate: String?
 )

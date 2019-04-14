@@ -5,6 +5,7 @@ import android.content.Context
 import com.mockingbird.spinkevich.data.source.db.ExchangeDatabase
 import com.mockingbird.spinkevich.data.source.db.dao.CountryDao
 import com.mockingbird.spinkevich.data.source.db.dao.CurrencyDao
+import com.mockingbird.spinkevich.data.source.db.dao.RateDao
 import dagger.Module
 import dagger.Provides
 
@@ -27,4 +28,7 @@ class DatabaseModule {
 
     @Provides
     fun providesCurrencyDao(database: ExchangeDatabase): CurrencyDao = database.currencyDao()
+
+    @Provides
+    fun providesRateDao(database: ExchangeDatabase): RateDao = database.rateDao()
 }

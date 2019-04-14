@@ -1,11 +1,11 @@
-package com.mockingbird.spinkevich.data.mapper
+package com.mockingbird.spinkevich.data.mapper.db
 
 import com.mockingbird.spinkevich.data.source.db.entity.CountrySchema
 import com.mockingbird.spinkevich.data.source.db.entity.CurrencySchema
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Currency
 
-object DatabaseMapper {
+object CountryDatabaseMapper {
 
     fun convertCountryToDomain(countrySchema: CountrySchema, currency: CurrencySchema): Country {
         return Country(

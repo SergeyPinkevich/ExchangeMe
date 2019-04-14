@@ -1,11 +1,11 @@
-package com.mockingbird.spinkevich.data.mapper
+package com.mockingbird.spinkevich.data.mapper.rest
 
 import com.mockingbird.spinkevich.data.entity.Country as CountryData
 import com.mockingbird.spinkevich.data.entity.Currency as CurrencyData
 import com.mockingbird.spinkevich.domain.entity.Country as CountryDomain
 import com.mockingbird.spinkevich.domain.entity.Currency as CurrencyDomain
 
-object RestDataMapper {
+object CountryRestMapper {
 
     fun convertToDomain(country: CountryData): CountryDomain {
         return CountryDomain(
