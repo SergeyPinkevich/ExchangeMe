@@ -14,7 +14,7 @@ class NewCurrencyPresenter @Inject constructor(
     private val allCountriesUseCase: AllCountriesUseCase
 ) : BasePresenter<NewCurrencyView>() {
 
-    private lateinit var countriesList: List<Country>
+    private var countriesList: List<Country>? = null
 
     fun loadCurrencies() {
         unsubscribeOnDestroy(
@@ -31,11 +31,13 @@ class NewCurrencyPresenter @Inject constructor(
     }
 
     fun filterCurrencies(query: String) {
-        val filteredList = countriesList.filter {
-            val filterByCurrencyName = it.name.simplify().contains(query.simplify())
-            val filterByCurrencyCode = it.currencies[0].name.simplify().contains(query.simplify())
-            filterByCurrencyName || filterByCurrencyCode
+        countriesList?.let {
+            val filteredList = countriesList?.filter {
+                val filterByCurrencyName = it.name.simplify().contains(query.simplify())
+                val filterByCurrencyCode = it.currencies[0].name.simplify().contains(query.simplify())
+                filterByCurrencyName || filterByCurrencyCode
+            }
+            viewState.showCountriesList(filteredList!!)
         }
-        viewState.showCountriesList(filteredList)
     }
 }
