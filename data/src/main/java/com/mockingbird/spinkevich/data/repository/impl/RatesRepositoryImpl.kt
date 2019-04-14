@@ -1,8 +1,8 @@
-package com.mockingbird.spinkevich.data.repository
+package com.mockingbird.spinkevich.data.repository.impl
 
-import com.mockingbird.spinkevich.data.data.api.service.RestService
-import com.mockingbird.spinkevich.data.data.db.dao.CountryDao
-import com.mockingbird.spinkevich.domain.repository.RatesRepository
+import com.mockingbird.spinkevich.data.repository.RatesRepository
+import com.mockingbird.spinkevich.data.source.api.service.RestService
+import com.mockingbird.spinkevich.data.source.db.dao.CountryDao
 import io.reactivex.Single
 import javax.inject.Inject
 

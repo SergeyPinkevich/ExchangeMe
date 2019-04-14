@@ -1,6 +1,6 @@
-package com.mockingbird.spinkevich.domain.interactor
+package com.mockingbird.spinkevich.data.interactor
 
-import com.mockingbird.spinkevich.domain.repository.RatesRepository
+import com.mockingbird.spinkevich.data.repository.RatesRepository
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

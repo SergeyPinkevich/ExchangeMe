@@ -1,7 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.di.module
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.mockingbird.spinkevich.data.data.api.service.RestService
+import com.mockingbird.spinkevich.data.source.api.service.RestService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

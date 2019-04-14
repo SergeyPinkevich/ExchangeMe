@@ -1,7 +1,7 @@
-package com.mockingbird.spinkevich.domain.interactor
+package com.mockingbird.spinkevich.data.interactor
 
 import android.text.format.DateUtils
-import com.mockingbird.spinkevich.domain.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.repository.UpdateRepository
 import com.mockingbird.spinkevich.domain.usecase.UpdateUseCase
 import java.util.Calendar
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.data.data.preferences
+package com.mockingbird.spinkevich.data.source.preferences
 
 import android.content.Context
 import com.mockingbird.spinkevich.data.utils.long

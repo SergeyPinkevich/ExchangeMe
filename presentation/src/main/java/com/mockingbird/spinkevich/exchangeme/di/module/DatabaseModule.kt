@@ -2,9 +2,9 @@ package com.mockingbird.spinkevich.exchangeme.di.module
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.mockingbird.spinkevich.data.data.db.ExchangeDatabase
-import com.mockingbird.spinkevich.data.data.db.dao.CountryDao
-import com.mockingbird.spinkevich.data.data.db.dao.CurrencyDao
+import com.mockingbird.spinkevich.data.source.db.ExchangeDatabase
+import com.mockingbird.spinkevich.data.source.db.dao.CountryDao
+import com.mockingbird.spinkevich.data.source.db.dao.CurrencyDao
 import dagger.Module
 import dagger.Provides
 

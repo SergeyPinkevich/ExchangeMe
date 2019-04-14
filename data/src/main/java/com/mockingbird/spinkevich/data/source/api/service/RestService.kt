@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.data.data.api.service
+package com.mockingbird.spinkevich.data.source.api.service
 
 import io.reactivex.Single
 import retrofit2.http.GET

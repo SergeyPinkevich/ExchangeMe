@@ -40,11 +40,11 @@ class ExchangePresenter @Inject constructor(
     }
 
     private fun initBaseCountry(baseCountry: Country) {
-        isBaseCountryInitialized = true
         unsubscribeOnDestroy(
             baseCountryUseCase.addBaseCountry(baseCountry)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
+                    isBaseCountryInitialized = true
                     viewState.initializeBaseCountry(baseCountry)
                 }
         )
@@ -67,13 +67,7 @@ class ExchangePresenter @Inject constructor(
 
     fun addCountry(country: Country) {
         if (!isBaseCountryInitialized) {
-            unsubscribeOnDestroy(
-                baseCountryUseCase.addBaseCountry(country)
-                    .subscribeWithTimberError {
-                        isBaseCountryInitialized = true
-                        viewState.initializeBaseCountry(country)
-                    }
-            )
+            initBaseCountry(country)
         } else {
             unsubscribeOnDestroy(
                 convertedCountriesUseCase.addConvertedCountry(country)

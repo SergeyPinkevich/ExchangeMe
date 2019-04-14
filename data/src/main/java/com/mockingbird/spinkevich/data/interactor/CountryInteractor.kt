@@ -1,7 +1,7 @@
-package com.mockingbird.spinkevich.domain.interactor
+package com.mockingbird.spinkevich.data.interactor
 
+import com.mockingbird.spinkevich.data.repository.CountryRepository
 import com.mockingbird.spinkevich.domain.entity.Country
-import com.mockingbird.spinkevich.domain.repository.CountryRepository
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase

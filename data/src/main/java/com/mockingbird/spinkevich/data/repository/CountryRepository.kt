@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.domain.repository
+package com.mockingbird.spinkevich.data.repository
 
 import com.mockingbird.spinkevich.domain.entity.Country
 import io.reactivex.Completable

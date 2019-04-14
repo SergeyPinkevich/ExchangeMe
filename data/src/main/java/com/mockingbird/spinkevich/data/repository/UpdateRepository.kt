@@ -1,4 +1,4 @@
-package com.mockingbird.spinkevich.domain.repository
+package com.mockingbird.spinkevich.data.repository
 
 interface UpdateRepository {
 

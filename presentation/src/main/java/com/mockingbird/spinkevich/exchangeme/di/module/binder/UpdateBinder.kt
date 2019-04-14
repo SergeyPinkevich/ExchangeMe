@@ -1,8 +1,8 @@
 package com.mockingbird.spinkevich.exchangeme.di.module.binder
 
-import com.mockingbird.spinkevich.data.repository.UpdateRepositoryImpl
-import com.mockingbird.spinkevich.domain.interactor.UpdateInteractor
-import com.mockingbird.spinkevich.domain.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.interactor.UpdateInteractor
+import com.mockingbird.spinkevich.data.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.repository.impl.UpdateRepositoryImpl
 import com.mockingbird.spinkevich.domain.usecase.UpdateUseCase
 import dagger.Binds
 import dagger.Module

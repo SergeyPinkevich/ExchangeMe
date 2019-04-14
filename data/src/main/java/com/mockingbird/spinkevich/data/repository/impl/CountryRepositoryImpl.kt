@@ -1,14 +1,14 @@
-package com.mockingbird.spinkevich.data.repository
+package com.mockingbird.spinkevich.data.repository.impl
 
-import com.mockingbird.spinkevich.data.data.api.service.RestService
-import com.mockingbird.spinkevich.data.data.db.dao.CountryDao
-import com.mockingbird.spinkevich.data.data.db.dao.CurrencyDao
-import com.mockingbird.spinkevich.data.data.db.entity.CurrencySchema
 import com.mockingbird.spinkevich.data.mapper.DatabaseMapper
+import com.mockingbird.spinkevich.data.repository.CountryRepository
+import com.mockingbird.spinkevich.data.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.source.api.service.RestService
+import com.mockingbird.spinkevich.data.source.db.dao.CountryDao
+import com.mockingbird.spinkevich.data.source.db.dao.CurrencyDao
+import com.mockingbird.spinkevich.data.source.db.entity.CurrencySchema
 import com.mockingbird.spinkevich.data.utils.JSONHelper
 import com.mockingbird.spinkevich.domain.entity.Country
-import com.mockingbird.spinkevich.domain.repository.CountryRepository
-import com.mockingbird.spinkevich.domain.repository.UpdateRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.util.Calendar

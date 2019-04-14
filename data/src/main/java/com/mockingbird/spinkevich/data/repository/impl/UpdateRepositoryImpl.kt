@@ -1,7 +1,7 @@
-package com.mockingbird.spinkevich.data.repository
+package com.mockingbird.spinkevich.data.repository.impl
 
-import com.mockingbird.spinkevich.data.data.preferences.ApplicationPreferences
-import com.mockingbird.spinkevich.domain.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.repository.UpdateRepository
+import com.mockingbird.spinkevich.data.source.preferences.ApplicationPreferences
 import javax.inject.Inject
 
 class UpdateRepositoryImpl @Inject constructor(
