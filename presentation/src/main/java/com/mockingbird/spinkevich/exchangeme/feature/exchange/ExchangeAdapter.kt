@@ -45,10 +45,19 @@ class ExchangeAdapter(
             val id = context.resources.getIdentifier(country.drawableResource, "drawable", context.packageName)
             itemView.exchange_currency_flag.setImageResource(id)
 
-            val currency = country.currencies.firstOrNull()
-            itemView.exchange_currency_code.text = currency?.code
-            itemView.exchange_currency_amount.text = "0"
-            itemView.exchange_currency_name.text = "${currency?.name} ${currency?.symbol}"
+            val currency = country.currency
+            itemView.exchange_currency_code.text = currency.code
+            val amount = formatAmount(currency.amount)
+            itemView.exchange_currency_amount.text = amount
+            itemView.exchange_currency_name.text = "${currency.name} ${currency.symbol}"
+        }
+
+        private fun formatAmount(amount: Float): String {
+            return if (amount == 0.0F) {
+                "0"
+            } else {
+                String.format("%.2f", amount)
+            }
         }
 
         private fun initSwipeLayout() {

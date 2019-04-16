@@ -25,7 +25,7 @@ class RatesRepositoryImpl @Inject constructor(
             .map { json -> jsonHelper.parseRates(json) }
             .doOnSuccess {
                 saveRatesInDatabase(it).subscribe()
-                updateRepository.setLastTimeUpdate(Calendar.getInstance().timeInMillis)
+                updateRepository.setLastTimeUpdateRates(Calendar.getInstance().timeInMillis)
             }
             .subscribeOn(Schedulers.io())
     }
@@ -34,7 +34,7 @@ class RatesRepositoryImpl @Inject constructor(
         return Single.fromCallable { rateDao.getRates() }
             .map {
                 val ratesDomain = mutableListOf<Rate>()
-                it.forEach { RateDatabaseMapper.convertRateToDomain(it) }
+                it.forEach { ratesDomain.add(RateDatabaseMapper.convertRateToDomain(it)) }
                 ratesDomain
             }
     }

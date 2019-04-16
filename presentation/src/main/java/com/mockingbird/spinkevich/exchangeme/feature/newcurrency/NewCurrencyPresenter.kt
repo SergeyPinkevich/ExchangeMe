@@ -34,7 +34,7 @@ class NewCurrencyPresenter @Inject constructor(
         countriesList?.let {
             val filteredList = countriesList?.filter {
                 val filterByCurrencyName = it.name.simplify().contains(query.simplify())
-                val filterByCurrencyCode = it.currencies[0].name.simplify().contains(query.simplify())
+                val filterByCurrencyCode = it.currency.name.simplify().contains(query.simplify())
                 filterByCurrencyName || filterByCurrencyCode
             }
             viewState.showCountriesList(filteredList!!)

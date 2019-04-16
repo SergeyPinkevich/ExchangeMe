@@ -27,7 +27,7 @@ class CountryInteractor @Inject constructor(
     }
 
     override fun getAllCountriesList(): Single<List<Country>> {
-        return if (updateUseCase.isNeedUpdate()) {
+        return if (updateUseCase.isNeedUpdateCountries()) {
             countryRepository.getCountriesListFromNetwork()
         } else {
             countryRepository.getCountriesListFromDatabase()

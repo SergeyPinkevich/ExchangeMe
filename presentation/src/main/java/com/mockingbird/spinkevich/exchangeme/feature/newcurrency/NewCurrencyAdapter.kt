@@ -25,7 +25,7 @@ class NewCurrencyAdapter(private val clickListener: (Country) -> Unit) : ListAda
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(country: Country, clickListener: (Country) -> Unit) {
-            val currency = country.currencies[0]
+            val currency = country.currency
             setImage(country)
             itemView.search_currency_country.text = country.name
             itemView.search_currency_name.text = "${currency.name}, ${currency.symbol}"

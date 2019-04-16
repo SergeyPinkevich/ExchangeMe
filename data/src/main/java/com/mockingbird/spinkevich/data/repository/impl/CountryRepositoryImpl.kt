@@ -24,7 +24,7 @@ class CountryRepositoryImpl @Inject constructor(
 
     override fun addCountry(country: Country): Completable {
         return Completable.fromCallable {
-            currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(country.currencies.first()))
+            currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(country.currency))
             countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
         }
     }
@@ -105,7 +105,7 @@ class CountryRepositoryImpl @Inject constructor(
             .map { json -> jsonHelper.parseCountries(json) }
             .doOnSuccess {
                 saveCountriesInDatabase(it).subscribe()
-                updateRepository.setLastTimeUpdate(Calendar.getInstance().timeInMillis)
+                updateRepository.setLastTimeUpdateCountries(Calendar.getInstance().timeInMillis)
             }
             .onErrorReturn { getCountriesListFromDatabase().blockingGet() }
     }
@@ -113,7 +113,7 @@ class CountryRepositoryImpl @Inject constructor(
     private fun saveCountriesInDatabase(countriesList: List<Country>): Completable {
         return Completable.fromCallable {
             countriesList.forEach {
-                currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(it.currencies.first()))
+                currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(it.currency))
                 countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(it, isBase = false, isConverted = false))
             }
         }

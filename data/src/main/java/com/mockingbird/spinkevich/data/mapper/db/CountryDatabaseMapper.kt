@@ -13,7 +13,7 @@ object CountryDatabaseMapper {
             name = countrySchema.name,
             region = countrySchema.region,
             subRegion = countrySchema.subregion,
-            currencies = listOf(convertCurrencyToDomain(currency))
+            currency = convertCurrencyToDomain(currency)
         )
     }
 
@@ -26,7 +26,7 @@ object CountryDatabaseMapper {
             code = country.code,
             region = country.region,
             subregion = country.subRegion,
-            currency = country.currencies.first().code
+            currency = country.currency.code
         )
     }
 
@@ -43,7 +43,8 @@ object CountryDatabaseMapper {
         return Currency(
             code = currencySchema.code,
             name = currencySchema.name,
-            symbol = currencySchema.symbol
+            symbol = currencySchema.symbol,
+            amount = 0.0F
         )
     }
 }

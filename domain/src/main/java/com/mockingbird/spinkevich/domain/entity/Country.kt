@@ -9,7 +9,7 @@ data class Country(
     val name: String,
     val region: String,
     val subRegion: String,
-    val currencies: List<Currency>
+    val currency: Currency
 ): Parcelable {
 
     open fun areItemsTheSame(newItem: Country) = this == newItem

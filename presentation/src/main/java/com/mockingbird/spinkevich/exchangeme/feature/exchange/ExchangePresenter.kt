@@ -19,6 +19,7 @@ class ExchangePresenter @Inject constructor(
 ): BasePresenter<ExchangeView>() {
 
     private var isBaseCountryInitialized = false
+    private var baseCountry: Country? = null
     private var convertedList: MutableList<Country> = mutableListOf()
     private var ratesList: MutableList<Rate> = mutableListOf()
 
@@ -47,6 +48,7 @@ class ExchangePresenter @Inject constructor(
             baseCountryUseCase.addBaseCountry(baseCountry)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
+                    this.baseCountry = baseCountry
                     isBaseCountryInitialized = true
                     viewState.initializeBaseCountry(baseCountry)
                 }
@@ -107,5 +109,15 @@ class ExchangePresenter @Inject constructor(
                     viewState.updateConvertedCountriesList(convertedList)
                 }
         )
+    }
+
+    fun convert(amount: Float) {
+        val baseRate = ratesList.find { it.currency == baseCountry?.currency?.code }
+        convertedList.forEach { country ->
+            val rate = ratesList.find { it.currency == country.currency.code }
+            val updatedRate = rate?.rate!! / baseRate?.rate!!
+            country.currency.amount = updatedRate * amount
+        }
+        viewState.updateConvertedCountriesList(convertedList)
     }
 }

@@ -7,7 +7,8 @@ import kotlinx.android.parcel.Parcelize
 data class Currency(
     val code: String,
     val name: String,
-    val symbol: String
+    val symbol: String,
+    var amount: Float
 ): Parcelable {
 
     open fun areItemsTheSame(newItem: Currency) = this == newItem

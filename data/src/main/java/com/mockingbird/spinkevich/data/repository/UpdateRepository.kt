@@ -2,7 +2,11 @@ package com.mockingbird.spinkevich.data.repository
 
 interface UpdateRepository {
 
-    fun getLastTimeUpdate(): Long
+    fun getLastTimeUpdateCountries(): Long
 
-    fun setLastTimeUpdate(time: Long)
+    fun setLastTimeUpdateCountries(time: Long)
+
+    fun getLastTimeUpdateRates(): Long
+
+    fun setLastTimeUpdateRates(time: Long)
 }

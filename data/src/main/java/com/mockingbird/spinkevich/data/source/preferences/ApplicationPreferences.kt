@@ -6,11 +6,13 @@ import javax.inject.Inject
 
 private const val FILE_NAME = "exchange.preferences"
 
-private const val KEY_LAST_TIME_UPDATE = ".last.time.update"
+private const val KEY_LAST_TIME_UPDATE_COUNTRIES = ".last.time.update.countries"
+private const val KEY_LAST_TIME_UPDATE_RATES = ".last.time.update.rates"
 
 class ApplicationPreferences @Inject constructor(context: Context) {
 
     private val preferences by lazy { context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE) }
 
-    var lastTimeUpdate by preferences.long(KEY_LAST_TIME_UPDATE)
+    var lastTimeUpdateCountries by preferences.long(KEY_LAST_TIME_UPDATE_COUNTRIES)
+    var lastTimeUpdateRates by preferences.long(KEY_LAST_TIME_UPDATE_RATES)
 }

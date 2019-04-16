@@ -89,13 +89,13 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun initializeBaseCountry(country: Country) {
         val resourceId = requireContext().resources.getIdentifier(country.drawableResource, "drawable", requireContext().packageName)
         base_currency_flag.setImageResource(resourceId)
-        val currency = country.currencies.firstOrNull()
-        base_currency_code.text = currency?.code
+        val currency = country.currency
+        base_currency_code.text = currency.code
         base_currency_amount.setText("0")
-        base_currency_name.text = "${currency?.name} ${currency?.symbol}"
+        base_currency_name.text = "${currency.name} ${currency.symbol}"
         base_currency_amount.afterTextChanged {
-            if (it.isEmpty()) {
-                base_currency_amount.setText("0")
+            if (it.isNotEmpty()) {
+                presenter.convert(it.toFloat())
             }
         }
     }

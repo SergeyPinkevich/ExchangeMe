@@ -14,7 +14,7 @@ class RatesInteractor @Inject constructor(
 ): RatesUseCase {
 
     override fun getCurrentRates(): Single<List<Rate>> {
-        return if (updateUseCase.isNeedUpdate()) {
+        return if (updateUseCase.isNeedUpdateRates()) {
             ratesRepository.getCurrentRatesFromNetwork()
         } else {
             ratesRepository.getCurrentRatesFromDatabase()

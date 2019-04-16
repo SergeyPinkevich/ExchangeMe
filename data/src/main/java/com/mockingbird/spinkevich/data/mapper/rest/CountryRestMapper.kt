@@ -13,7 +13,7 @@ object CountryRestMapper {
             country.name ?: "",
             country.region ?: "",
             country.subregion ?: "",
-            country.currencies?.map { convertCurrencyToDomain(it) } ?: emptyList()
+            convertCurrencyToDomain(country.currencies?.first()!!)
         )
     }
 
@@ -21,7 +21,8 @@ object CountryRestMapper {
         return CurrencyDomain(
             currency.code ?: "",
             currency.name ?: "",
-            currency.symbol ?: ""
+            currency.symbol ?: "",
+            0.0F
         )
     }
 }

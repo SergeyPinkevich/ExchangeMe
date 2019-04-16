@@ -8,11 +8,19 @@ class UpdateRepositoryImpl @Inject constructor(
     private val preferences: ApplicationPreferences
 ): UpdateRepository {
 
-    override fun getLastTimeUpdate(): Long {
-        return preferences.lastTimeUpdate
+    override fun getLastTimeUpdateCountries(): Long {
+        return preferences.lastTimeUpdateCountries
     }
 
-    override fun setLastTimeUpdate(time: Long) {
-        preferences.lastTimeUpdate = time
+    override fun setLastTimeUpdateCountries(time: Long) {
+        preferences.lastTimeUpdateCountries = time
+    }
+
+    override fun getLastTimeUpdateRates(): Long {
+        return preferences.lastTimeUpdateRates
+    }
+
+    override fun setLastTimeUpdateRates(time: Long) {
+        preferences.lastTimeUpdateRates = time
     }
 }
