@@ -47,8 +47,7 @@ class ExchangeAdapter(
 
             val currency = country.currency
             itemView.exchange_currency_code.text = currency.code
-            val amount = formatAmount(currency.amount)
-            itemView.exchange_currency_amount.text = amount
+            itemView.exchange_currency_amount.text = formatAmount(currency.amount)
             itemView.exchange_currency_name.text = "${currency.name} ${currency.symbol}"
         }
 
