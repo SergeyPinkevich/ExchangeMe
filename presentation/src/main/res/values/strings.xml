@@ -14,5 +14,7 @@
     <string name="allow_permission_button">Allow</string>
     <string name="refuse_permission_button">Select manually</string>
 
+    <string name="hint_for_base_currency" translatable="false">0</string>
+
     <string name="error_detect_location">Unable to locate</string>
 </resources>
