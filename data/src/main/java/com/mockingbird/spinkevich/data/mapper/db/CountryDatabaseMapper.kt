@@ -13,7 +13,8 @@ object CountryDatabaseMapper {
             name = countrySchema.name,
             region = countrySchema.region,
             subRegion = countrySchema.subregion,
-            currency = convertCurrencyToDomain(currency)
+            currency = convertCurrencyToDomain(currency),
+            englishName = countrySchema.englishName
         )
     }
 
@@ -26,7 +27,8 @@ object CountryDatabaseMapper {
             code = country.code,
             region = country.region,
             subregion = country.subRegion,
-            currency = country.currency.code
+            currency = country.currency.code,
+            englishName = country.englishName
         )
     }
 

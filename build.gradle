@@ -10,6 +10,7 @@ buildscript {
         rx_android_version = '2.1.0'
         retrofit_version = '2.3.0'
         retrofit_adapter = '1.0.0'
+        retrofit_logging = '3.8.0'
         room_version = '1.0.0'
         moxy_version = '1.5.3'
         timber_version = '4.7.1'

@@ -21,5 +21,7 @@ data class CountrySchema(
     @ColumnInfo(name = "subregion")
     var subregion: String,
     @ColumnInfo(name = "currency")
-    var currency: String
+    var currency: String,
+    @ColumnInfo(name = "englishName")
+    var englishName: String
 )

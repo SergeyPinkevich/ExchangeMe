@@ -16,5 +16,8 @@
 
     <string name="hint_for_base_currency" translatable="false">0</string>
 
+    <string name="error_rates_update">Unable to update rates</string>
+    <string name="successfull_rates_update">Rates were updated</string>
+
     <string name="error_detect_location">Unable to locate</string>
 </resources>

@@ -15,5 +15,8 @@
     <string name="allow_permission_button">Разрешить</string>
     <string name="refuse_permission_button">Выбрать вручную</string>
 
+    <string name="error_rates_update">Не удалось обновить курсы валют</string>
+    <string name="successfull_rates_update">Курсы валют обновлены</string>
+
     <string name="error_detect_location">Не удалось определить местоположение</string>
 </resources>

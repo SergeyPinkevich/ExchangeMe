@@ -16,4 +16,8 @@ interface ExchangeView : MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun updateConvertedCountriesList(convertedCountries: List<Country>)
+
+    fun ratesUpdatesSuccessfully()
+
+    fun ratesUpdatesWithError()
 }

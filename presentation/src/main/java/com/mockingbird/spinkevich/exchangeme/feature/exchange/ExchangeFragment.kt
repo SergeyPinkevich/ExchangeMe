@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -108,5 +109,13 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     override fun updateConvertedCountriesList(convertedCountries: List<Country>) {
         adapter.submitList(convertedCountries)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun ratesUpdatesSuccessfully() {
+        Snackbar.make(view!!, getString(R.string.successfull_rates_update), Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun ratesUpdatesWithError() {
+        Snackbar.make(view!!, getString(R.string.error_rates_update), Snackbar.LENGTH_SHORT).show()
     }
 }

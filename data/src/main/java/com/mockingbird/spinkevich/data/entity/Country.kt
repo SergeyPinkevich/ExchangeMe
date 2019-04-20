@@ -17,7 +17,9 @@ data class Country(
     @SerializedName("subregion")
     val subregion: String?,
     @SerializedName("currencies")
-    val currencies: List<Currency>?
+    val currencies: List<Currency>?,
+    @SerializedName("englishName")
+    val englishName: String?
 )
 
 data class Currency(

@@ -9,7 +9,8 @@ data class Country(
     val name: String,
     val region: String,
     val subRegion: String,
-    val currency: Currency
+    val currency: Currency,
+    val englishName: String
 ): Parcelable {
 
     open fun areItemsTheSame(newItem: Country) = this == newItem
@@ -17,5 +18,5 @@ data class Country(
     open fun areContentsTheSame(newItem: Country) = this == newItem
 
     val drawableResource: String
-    get() = name.replace("\\s+".toRegex(), "").toLowerCase()
+    get() = englishName.replace("\\s+".toRegex(), "").toLowerCase()
 }
