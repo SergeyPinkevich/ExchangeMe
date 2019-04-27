@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Rate
+import com.mockingbird.spinkevich.domain.entity.Source
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
@@ -22,6 +23,7 @@ class ExchangePresenter @Inject constructor(
     private var baseCountry: Country? = null
     private var convertedList: MutableList<Country> = mutableListOf()
     private var ratesList: MutableList<Rate> = mutableListOf()
+    private var baseCurrencyAmount = 0F
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -32,8 +34,12 @@ class ExchangePresenter @Inject constructor(
         unsubscribeOnDestroy(
             ratesUseCase.getCurrentRates()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWithTimberError {
-                    ratesList = it.toMutableList()
+                .doOnError { viewState.ratesUpdatesWithError() }
+                .subscribeWithTimberError { response ->
+                    ratesList = response.rates.toMutableList()
+                    if (response.source == Source.NETWORK) {
+                        viewState.ratesUpdatesSuccessfully()
+                    }
                 }
         )
     }
@@ -67,7 +73,10 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun addCurrencyMenuClicked() {
-        viewState.openNewCurrencyScreen()
+        val countriesAlreadyAdded = arrayListOf<Country>().apply {
+            addAll(convertedList)
+        }
+        viewState.openNewCurrencyScreen(countriesAlreadyAdded)
     }
 
     fun addCountry(country: Country) {
@@ -79,7 +88,7 @@ class ExchangePresenter @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWithTimberError {
                         convertedList.add(country)
-                        viewState.updateConvertedCountriesList(convertedList)
+                        convert(baseCurrencyAmount)
                     }
             )
         }
@@ -97,21 +106,11 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun swapCountryWithBase(country: Country) {
-        unsubscribeOnDestroy(
-            baseCountryUseCase.getBaseCountry()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWithTimberError { baseCountry ->
-                    convertedList.remove(country)
-                    convertedList.add(baseCountry)
-                    initBaseCountry(country)
-
-                    convertedCountriesUseCase.addConvertedCountry(baseCountry).subscribe()
-                    viewState.updateConvertedCountriesList(convertedList)
-                }
-        )
+        // TODO implement swap
     }
 
     fun convert(amount: Float) {
+        baseCurrencyAmount = amount
         val baseRate = ratesList.find { it.currency == baseCountry?.currency?.code }
         convertedList.forEach { country ->
             val rate = ratesList.find { it.currency == country.currency.code }

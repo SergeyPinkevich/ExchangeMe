@@ -7,6 +7,7 @@
     <string name="add_menu_title">Add currency</string>
     <string name="search_field_hint">Currency or country</string>
     <string name="load_currencies_error">Load list of currencies failed</string>
+    <string name="country_already_selected">Currency with this country already selected</string>
 
     <!-- Start screen -->
     <string name="title_permission">Please, give us access to your location</string>

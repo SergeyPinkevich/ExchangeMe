@@ -8,6 +8,7 @@
     <string name="add_menu_title">Добавить валюту</string>
     <string name="search_field_hint">Валюта или страна</string>
     <string name="load_currencies_error">Не удалось загрузить список валют</string>
+    <string name="country_already_selected">Валюта с этой страной уже была выбрана</string>
 
     <!-- Start screen -->
     <string name="title_permission">Пожалуйста, дайте доступ к местоположению</string>

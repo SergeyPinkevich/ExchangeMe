@@ -39,8 +39,8 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         return graph.presenter.apply {
             arguments?.let {
                 val baseCountry = it.getParcelable<Country>(BF_BASE_COUNTRY)
-                baseCountry?.let { graph.presenter.init(baseCountry) } ?: openNewCurrencyScreen()
-            } ?: openNewCurrencyScreen()
+                baseCountry?.let { graph.presenter.init(baseCountry) } ?: openNewCurrencyScreen(arrayListOf())
+            } ?: openNewCurrencyScreen(arrayListOf())
         }
     }
 
@@ -96,12 +96,14 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         base_currency_amount.afterTextChanged {
             if (it.isNotEmpty()) {
                 presenter.convert(it.toFloat())
+            } else {
+                presenter.convert(0F)
             }
         }
     }
 
-    override fun openNewCurrencyScreen() {
-        val fragment = NewCurrencyFragment()
+    override fun openNewCurrencyScreen(convertedCountries: ArrayList<Country>) {
+        val fragment = NewCurrencyFragment.newInstance(convertedCountries)
         fragment.setTargetFragment(this, NEW_COUNTRY_REQUEST_CODE)
         requireActivity().addFragmentToStack(R.id.fragment_container, fragment)
     }

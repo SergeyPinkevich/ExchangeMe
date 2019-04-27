@@ -14,7 +14,12 @@ class NewCurrencyPresenter @Inject constructor(
     private val allCountriesUseCase: AllCountriesUseCase
 ) : BasePresenter<NewCurrencyView>() {
 
+    private var countriesAlreadyAdded: List<Country>? = null
     private var countriesList: List<Country>? = null
+
+    fun init(countriesAlreadyAdded: ArrayList<Country>) {
+        this.countriesAlreadyAdded = countriesAlreadyAdded
+    }
 
     fun loadCurrencies() {
         unsubscribeOnDestroy(
@@ -38,6 +43,14 @@ class NewCurrencyPresenter @Inject constructor(
                 filterByCurrencyName || filterByCurrencyCode
             }
             viewState.showCountriesList(filteredList!!)
+        }
+    }
+
+    fun countrySelected(country: Country) {
+        if (countriesAlreadyAdded?.contains(country) == true) {
+            viewState.showCountryAlreadyWasSelected()
+        } else {
+            viewState.addCountryToList(country)
         }
     }
 }

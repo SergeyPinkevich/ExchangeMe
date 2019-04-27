@@ -8,5 +8,9 @@ interface NewCurrencyView : MvpView, ShowHideProgress {
 
     fun showCountriesList(currenciesList: List<Country>)
 
+    fun addCountryToList(country: Country)
+
+    fun showCountryAlreadyWasSelected()
+
     fun showError()
 }

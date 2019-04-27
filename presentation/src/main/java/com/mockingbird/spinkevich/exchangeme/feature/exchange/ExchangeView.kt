@@ -12,12 +12,14 @@ interface ExchangeView : MvpView {
     fun initializeBaseCountry(country: Country)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
-    fun openNewCurrencyScreen()
+    fun openNewCurrencyScreen(convertedCountries: ArrayList<Country>)
 
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun updateConvertedCountriesList(convertedCountries: List<Country>)
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun ratesUpdatesSuccessfully()
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun ratesUpdatesWithError()
 }

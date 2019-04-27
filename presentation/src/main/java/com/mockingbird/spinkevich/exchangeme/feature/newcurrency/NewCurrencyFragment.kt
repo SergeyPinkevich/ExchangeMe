@@ -20,11 +20,13 @@ import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.utils.makeGone
 import com.mockingbird.spinkevich.exchangeme.utils.makeVisible
 import com.mockingbird.spinkevich.exchangeme.utils.onQueryTextChange
+import com.mockingbird.spinkevich.exchangeme.utils.putArguments
 import kotlinx.android.synthetic.main.fragment_new_currency.currencies_list
 import kotlinx.android.synthetic.main.fragment_new_currency.new_currency_progress
 
 const val NEW_COUNTRY_REQUEST_CODE = 1492
 const val BF_NEW_COUNTRY = ".new.currency"
+const val BF_CONVERTED_COUNTRIES = ".converted.countries"
 
 class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurrencyView {
 
@@ -33,7 +35,11 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
 
     @ProvidePresenter
     fun providePresenter(): NewCurrencyPresenter {
-        return graph.presenter
+        return graph.presenter.apply {
+            arguments?.let {
+                init(it.getParcelableArrayList(BF_CONVERTED_COUNTRIES) ?: arrayListOf())
+            }
+        }
     }
 
     private lateinit var adapter: NewCurrencyAdapter
@@ -72,6 +78,15 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
     }
 
     private fun handleCountryChoice(country: Country) {
+        presenter.countrySelected(country)
+    }
+
+    override fun showCountriesList(currenciesList: List<Country>) {
+        val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }.sortedWith(compareBy {it.name})
+        adapter.submitList(filterList)
+    }
+
+    override fun addCountryToList(country: Country) {
         val intent = requireActivity().intent.apply {
             putExtra(BF_NEW_COUNTRY, country)
         }
@@ -79,9 +94,8 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
         requireActivity().onBackPressed()
     }
 
-    override fun showCountriesList(currenciesList: List<Country>) {
-        val filterList = currenciesList.filter { checkIfCountryHasFlag(it) }.sortedWith(compareBy {it.englishName})
-        adapter.submitList(filterList)
+    override fun showCountryAlreadyWasSelected() {
+        Snackbar.make(currencies_list, R.string.country_already_selected, Snackbar.LENGTH_LONG).show()
     }
 
     override fun showError() {
@@ -106,5 +120,13 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
             return false
         }
         return true
+    }
+
+    companion object {
+        fun newInstance(countries: ArrayList<Country>): NewCurrencyFragment {
+            return NewCurrencyFragment().putArguments {
+                putParcelableArrayList(BF_CONVERTED_COUNTRIES, countries)
+            }
+        }
     }
 }
