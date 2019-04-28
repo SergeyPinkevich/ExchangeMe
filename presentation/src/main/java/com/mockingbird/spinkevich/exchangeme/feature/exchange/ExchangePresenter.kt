@@ -9,7 +9,9 @@ import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function3
 import javax.inject.Inject
 
 @InjectViewState
@@ -106,7 +108,25 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun swapCountryWithBase(country: Country) {
-        // TODO implement swap
+        unsubscribeOnDestroy(
+            baseCountryUseCase.getBaseCountry()
+                .flatMap { baseCountry ->
+                    Single.zip(
+                        convertedCountriesUseCase.addConvertedCountry(baseCountry).andThen(Single.just(Any())),
+                        convertedCountriesUseCase.deleteConvertedCountry(country).andThen(Single.just(Any())),
+                        baseCountryUseCase.addBaseCountry(country).andThen(Single.just(Any())),
+                        Function3 { _: Any, _: Any, _: Any -> }
+                    )
+                }
+                .doOnError {  }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithTimberError {
+                    initBaseCountry(country)
+                    convertedList.add(baseCountry!!)
+                    convertedList.remove(country)
+                    viewState.updateConvertedCountriesList(convertedList)
+                }
+        )
     }
 
     fun convert(amount: Float) {
