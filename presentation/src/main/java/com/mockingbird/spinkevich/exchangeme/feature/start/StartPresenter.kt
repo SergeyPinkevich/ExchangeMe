@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.exchangeme.feature.start
 import android.location.Geocoder
 import android.location.Location
 import com.arellomobile.mvp.InjectViewState
+import com.mockingbird.spinkevich.analytics.AppAnalytics
 import com.mockingbird.spinkevich.data.utils.location.DetectLocationHelper
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
@@ -17,12 +18,14 @@ import javax.inject.Inject
 class StartPresenter @Inject constructor(
     private val detectLocationHelper: DetectLocationHelper,
     private val geocoder: Geocoder,
-    private val allCountriesUseCase: AllCountriesUseCase
+    private val allCountriesUseCase: AllCountriesUseCase,
+    private val appAnalytics: AppAnalytics
 ) : BasePresenter<StartView>() {
 
     private lateinit var countryCode: String
 
     fun locationPermissionWasGranted() {
+        appAnalytics.logLocationPermissionAnalyticEvent(true)
         unsubscribeOnDestroy(
             Single.fromCallable { detectLocationHelper.getLocation() }
                 .subscribeOn(Schedulers.io())
@@ -37,12 +40,14 @@ class StartPresenter @Inject constructor(
                         viewState.showUnknownLocationError()
                     } else {
                         viewState.openExchangeScreen(it)
+                        appAnalytics.logBaseCountryAdded(it)
                     }
                 }
         )
     }
 
     fun locationPermissionWasRefused() {
+        appAnalytics.logLocationPermissionAnalyticEvent(true)
         viewState.openAddCurrencyScreen()
     }
 

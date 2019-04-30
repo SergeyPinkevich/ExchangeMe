@@ -1,6 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import com.arellomobile.mvp.InjectViewState
+import com.mockingbird.spinkevich.analytics.AppAnalytics
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Rate
 import com.mockingbird.spinkevich.domain.entity.Source
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class ExchangePresenter @Inject constructor(
     private val baseCountryUseCase: BaseCountryUseCase,
     private val convertedCountriesUseCase: ConvertedCountriesUseCase,
-    private val ratesUseCase: RatesUseCase
+    private val ratesUseCase: RatesUseCase,
+    private val appAnalytics: AppAnalytics
 ): BasePresenter<ExchangeView>() {
 
     private var isBaseCountryInitialized = false
@@ -84,6 +86,7 @@ class ExchangePresenter @Inject constructor(
     fun addCountry(country: Country) {
         if (!isBaseCountryInitialized) {
             initBaseCountry(country)
+            appAnalytics.logBaseCountryAdded(country)
         } else {
             unsubscribeOnDestroy(
                 convertedCountriesUseCase.addConvertedCountry(country)
@@ -93,6 +96,7 @@ class ExchangePresenter @Inject constructor(
                         convert(baseCurrencyAmount)
                     }
             )
+            appAnalytics.logNewCurrencyAdded(country)
         }
     }
 
@@ -103,6 +107,7 @@ class ExchangePresenter @Inject constructor(
                 .subscribeWithTimberError {
                     convertedList.remove(country)
                     viewState.updateConvertedCountriesList(convertedList)
+                    appAnalytics.logCurrencyDeleted(country)
                 }
         )
     }
@@ -114,17 +119,16 @@ class ExchangePresenter @Inject constructor(
                     Single.zip(
                         convertedCountriesUseCase.addConvertedCountry(baseCountry).andThen(Single.just(Any())),
                         convertedCountriesUseCase.deleteConvertedCountry(country).andThen(Single.just(Any())),
-                        baseCountryUseCase.addBaseCountry(country).andThen(Single.just(Any())),
+                        Single.fromCallable { initBaseCountry(country) },
                         Function3 { _: Any, _: Any, _: Any -> }
                     )
                 }
-                .doOnError {  }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
-                    initBaseCountry(country)
                     convertedList.add(baseCountry!!)
                     convertedList.remove(country)
                     viewState.updateConvertedCountriesList(convertedList)
+                    appAnalytics.logCurrenciesSwapped(baseCountry!!, country)
                 }
         )
     }

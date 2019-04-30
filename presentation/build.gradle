@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -26,6 +27,7 @@ dependencies {
 
     implementation project(':data')
     implementation project(':domain')
+    implementation project(':analytics')
 
     implementation(
             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
@@ -54,7 +56,9 @@ dependencies {
             "com.android.support.constraint:constraint-layout:$constraint_version",
             "com.jakewharton.timber:timber:$timber_version",
 
-            "com.daimajia.swipelayout:library:$swipe_layout"
+            "com.daimajia.swipelayout:library:$swipe_layout",
+
+            "com.google.firebase:firebase-core:$firebase_core_version"
     )
     kapt(
             "com.google.dagger:dagger-compiler:$dagger_version",

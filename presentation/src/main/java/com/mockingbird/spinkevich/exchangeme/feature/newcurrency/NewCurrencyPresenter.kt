@@ -1,6 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.feature.newcurrency
 
 import com.arellomobile.mvp.InjectViewState
+import com.mockingbird.spinkevich.analytics.AppAnalytics
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.usecase.AllCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @InjectViewState
 class NewCurrencyPresenter @Inject constructor(
-    private val allCountriesUseCase: AllCountriesUseCase
+    private val allCountriesUseCase: AllCountriesUseCase,
+    private val appAnalytics: AppAnalytics
 ) : BasePresenter<NewCurrencyView>() {
 
     private var countriesAlreadyAdded: List<Country>? = null
@@ -52,5 +54,9 @@ class NewCurrencyPresenter @Inject constructor(
         } else {
             viewState.addCountryToList(country)
         }
+    }
+
+    fun searchButtonClicked() {
+        appAnalytics.logNewCurrencySearchButtonClicked()
     }
 }
