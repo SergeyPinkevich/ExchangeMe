@@ -25,97 +25,123 @@ class CountryRepositoryImpl @Inject constructor(
     override fun addCountry(country: Country): Completable {
         return Completable.fromCallable {
             currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(country.currency))
-            countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
+            countryDao.insert(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    country,
+                    isBase = false,
+                    isConverted = false
+                )
+            )
         }
     }
 
     override fun addBaseCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = true, isConverted = false))
+            countryDao.update(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    country,
+                    isBase = true,
+                    isConverted = false
+                )
+            )
         }
     }
 
     override fun addConvertedCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = true))
+            countryDao.update(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    country,
+                    isBase = false,
+                    isConverted = true
+                )
+            )
         }
     }
 
     override fun deleteConvertedCountry(country: Country): Completable {
         return Completable.fromCallable {
-            countryDao.update(CountryDatabaseMapper.convertToDatabaseEntity(country, isBase = false, isConverted = false))
+            countryDao.update(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    country,
+                    isBase = false,
+                    isConverted = false
+                )
+            )
+        }
+    }
+
+    override fun swapCountries(baseCountry: Country, swappedCountry: Country): Completable {
+        return Completable.fromCallable {
+            countryDao.update(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    swappedCountry,
+                    isBase = true,
+                    isConverted = false
+                )
+            )
+            countryDao.update(
+                CountryDatabaseMapper.convertToDatabaseEntity(
+                    baseCountry,
+                    isBase = false,
+                    isConverted = true
+                )
+            )
         }
     }
 
     override fun getBaseCountry(): Single<Country> {
         return Single.fromCallable { countryDao.getBaseCountry() }
-            .flatMap { baseCountry ->
-                return@flatMap Single.fromCallable { currencyDao.getCurrency(baseCountry.currency) }
-                    .map { return@map Pair(baseCountry, it) }
+            .map { baseCountrySchema ->
+                val currencySchema = currencyDao.getCurrency(baseCountrySchema.currency)
+                CountryDatabaseMapper.convertCountryToDomain(baseCountrySchema, currencySchema)
             }
-            .map { CountryDatabaseMapper.convertCountryToDomain(it.first, it.second) }
     }
 
     override fun getConvertedCountriesList(): Single<List<Country>> {
         return Single.fromCallable { countryDao.getConvertedCountries() }
-            .flatMap { convertedCountries ->
-                return@flatMap Single.fromCallable {
-                    val currenciesList = mutableListOf<CurrencySchema>()
-                    convertedCountries.forEach {
-                        currenciesList.add(currencyDao.getCurrency(it.currency))
-                    }
-                    return@fromCallable currenciesList
-                }.map { return@map Pair(convertedCountries, it) }
-            }
-            .map { (countryList, currencyList) ->
-                val countriesDomain = mutableListOf<Country>()
-                for (i in 0 until countryList.size) {
-                    countriesDomain.add(
-                        CountryDatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
-                    )
+            .map { convertedCountries ->
+                convertedCountries
+                    .map { countrySchema ->
+                        val currencySchema = currencyDao.getCurrency(countrySchema.currency)
+                        CountryDatabaseMapper.convertCountryToDomain(countrySchema, currencySchema)
                 }
-                countriesDomain
             }
     }
 
     override fun getCountriesListFromDatabase(): Single<List<Country>> {
         return Single.fromCallable { countryDao.getAllCountries() }
-            .flatMap { allCountries ->
-                return@flatMap Single.fromCallable {
-                    val currenciesList = mutableListOf<CurrencySchema>()
-                    allCountries.forEach {
-                        currenciesList.add(currencyDao.getCurrency(it.currency))
+            .map { allCountries ->
+                allCountries
+                    .map { countrySchema ->
+                        val currency = currencyDao.getCurrency(countrySchema.currency)
+                        CountryDatabaseMapper.convertCountryToDomain(countrySchema, currency)
                     }
-                    return@fromCallable currenciesList
-                }.map { return@map Pair(allCountries, it) }
-            }
-            .map { (countryList, currencyList) ->
-                val countriesDomain = mutableListOf<Country>()
-                for (i in 0 until countryList.size) {
-                    countriesDomain.add(
-                        CountryDatabaseMapper.convertCountryToDomain(countryList[i], currencyList[i])
-                    )
-                }
-                countriesDomain
             }
     }
 
     override fun getCountriesListFromNetwork(): Single<List<Country>> {
         return restService.getCountriesList()
             .map { json -> jsonHelper.parseCountries(json) }
-            .doOnSuccess {
-                saveCountriesInDatabase(it).subscribe()
-                updateRepository.setLastTimeUpdateCountries(Calendar.getInstance().timeInMillis)
+            .flatMap {
+                return@flatMap saveCountriesInDatabase(it).andThen(Single.just(it))
             }
-            .onErrorReturn { getCountriesListFromDatabase().blockingGet() }
+            .onErrorResumeNext { getCountriesListFromDatabase() }
     }
 
     private fun saveCountriesInDatabase(countriesList: List<Country>): Completable {
         return Completable.fromCallable {
             countriesList.forEach {
                 currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(it.currency))
-                countryDao.insert(CountryDatabaseMapper.convertToDatabaseEntity(it, isBase = false, isConverted = false))
+                countryDao.insert(
+                    CountryDatabaseMapper.convertToDatabaseEntity(
+                        it,
+                        isBase = false,
+                        isConverted = false
+                    )
+                )
             }
+            updateRepository.setLastTimeUpdateCountries(Calendar.getInstance().timeInMillis)
         }
     }
 }

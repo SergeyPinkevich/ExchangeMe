@@ -7,6 +7,7 @@ import com.mockingbird.spinkevich.domain.entity.Source
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
+import com.mockingbird.spinkevich.domain.usecase.SwapCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.Single
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class ExchangePresenter @Inject constructor(
     private val baseCountryUseCase: BaseCountryUseCase,
     private val convertedCountriesUseCase: ConvertedCountriesUseCase,
+    private val swapCountriesUseCase: SwapCountriesUseCase,
     private val ratesUseCase: RatesUseCase
 ): BasePresenter<ExchangeView>() {
 
@@ -109,21 +111,13 @@ class ExchangePresenter @Inject constructor(
 
     fun swapCountryWithBase(country: Country) {
         unsubscribeOnDestroy(
-            baseCountryUseCase.getBaseCountry()
-                .flatMap { baseCountry ->
-                    Single.zip(
-                        convertedCountriesUseCase.addConvertedCountry(baseCountry).andThen(Single.just(Any())),
-                        convertedCountriesUseCase.deleteConvertedCountry(country).andThen(Single.just(Any())),
-                        baseCountryUseCase.addBaseCountry(country).andThen(Single.just(Any())),
-                        Function3 { _: Any, _: Any, _: Any -> }
-                    )
-                }
-                .doOnError {  }
+            swapCountriesUseCase.swapCountries(baseCountry!!, country)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWithTimberError {
-                    initBaseCountry(country)
-                    convertedList.add(baseCountry!!)
                     convertedList.remove(country)
+                    convertedList.add(baseCountry!!)
+                    baseCountry = country
+                    viewState.initializeBaseCountry(baseCountry!!)
                     viewState.updateConvertedCountriesList(convertedList)
                 }
         )

@@ -14,6 +14,8 @@ interface CountryRepository {
 
     fun deleteConvertedCountry(country: Country): Completable
 
+    fun swapCountries(baseCountry: Country, swappedCountry: Country): Completable
+
     fun getCountriesListFromNetwork(): Single<List<Country>>
 
     fun getCountriesListFromDatabase(): Single<List<Country>>
