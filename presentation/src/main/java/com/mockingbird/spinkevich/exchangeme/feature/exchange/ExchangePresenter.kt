@@ -31,10 +31,10 @@ class ExchangePresenter @Inject constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        observeRates()
+        updateRates()
     }
 
-    private fun observeRates() {
+    fun updateRates() {
         unsubscribeOnDestroy(
             ratesUseCase.getCurrentRates()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -128,6 +128,10 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun convert(amount: Float) {
+        if (ratesList.isEmpty()) {
+            viewState.ratesUpdatesWithError()
+            return
+        }
         baseCurrencyAmount = amount
         val baseRate = ratesList.find { it.currency == baseCountry?.currency?.code }
         convertedList.forEach { country ->

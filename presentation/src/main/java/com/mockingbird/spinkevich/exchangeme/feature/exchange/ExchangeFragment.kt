@@ -118,6 +118,8 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
     }
 
     override fun ratesUpdatesWithError() {
-        Snackbar.make(view!!, getString(R.string.error_rates_update), Snackbar.LENGTH_SHORT).show()
+        val snackbar = Snackbar.make(view!!, getString(R.string.error_rates_update), Snackbar.LENGTH_SHORT)
+        snackbar.setAction(R.string.retry) { presenter.updateRates() }
+        snackbar.show()
     }
 }
