@@ -1,6 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import com.arellomobile.mvp.InjectViewState
+import com.mockingbird.spinkevich.analytics.AppAnalytics
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Rate
 import com.mockingbird.spinkevich.domain.entity.Source
@@ -10,9 +11,7 @@ import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.domain.usecase.SwapCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function3
 import javax.inject.Inject
 
 @InjectViewState
@@ -20,7 +19,8 @@ class ExchangePresenter @Inject constructor(
     private val baseCountryUseCase: BaseCountryUseCase,
     private val convertedCountriesUseCase: ConvertedCountriesUseCase,
     private val swapCountriesUseCase: SwapCountriesUseCase,
-    private val ratesUseCase: RatesUseCase
+    private val ratesUseCase: RatesUseCase,
+    private val appAnalytics: AppAnalytics
 ): BasePresenter<ExchangeView>() {
 
     private var isBaseCountryInitialized = false
@@ -86,6 +86,7 @@ class ExchangePresenter @Inject constructor(
     fun addCountry(country: Country) {
         if (!isBaseCountryInitialized) {
             initBaseCountry(country)
+            appAnalytics.logBaseCountryAdded(country)
         } else {
             unsubscribeOnDestroy(
                 convertedCountriesUseCase.addConvertedCountry(country)
@@ -95,6 +96,7 @@ class ExchangePresenter @Inject constructor(
                         convert(baseCurrencyAmount)
                     }
             )
+            appAnalytics.logNewCurrencyAdded(country)
         }
     }
 
@@ -105,6 +107,7 @@ class ExchangePresenter @Inject constructor(
                 .subscribeWithTimberError {
                     convertedList.remove(country)
                     viewState.updateConvertedCountriesList(convertedList)
+                    appAnalytics.logCurrencyDeleted(country)
                 }
         )
     }
@@ -119,6 +122,7 @@ class ExchangePresenter @Inject constructor(
                     baseCountry = country
                     viewState.initializeBaseCountry(baseCountry!!)
                     viewState.updateConvertedCountriesList(convertedList)
+                    appAnalytics.logCurrenciesSwapped(baseCountry!!, country)
                 }
         )
     }

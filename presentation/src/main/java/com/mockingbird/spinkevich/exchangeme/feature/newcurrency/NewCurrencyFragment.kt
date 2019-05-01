@@ -61,6 +61,11 @@ class NewCurrencyFragment : FeatureFragment<NewCurrencyFragmentGraph>(), NewCurr
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = getString(R.string.search_field_hint)
 
+        searchItem.setOnMenuItemClickListener {
+            presenter.searchButtonClicked()
+            return@setOnMenuItemClickListener true
+        }
+
         searchView.onQueryTextChange { presenter.filterCurrencies(it) }
     }
 
