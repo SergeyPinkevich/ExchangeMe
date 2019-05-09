@@ -29,7 +29,7 @@ class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideFirebaseAnanlytics(): FirebaseAnalytics {
+    fun provideFirebaseAnalytics(): FirebaseAnalytics {
         return FirebaseAnalytics.getInstance(context)
     }
 }

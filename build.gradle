@@ -19,18 +19,19 @@ buildscript {
         swipe_layout = '1.2.0@aar'
         google_services_version = '4.0.1'
         firebase_core_version = '16.0.1'
+        fabric_gradle_version = '1.28.0'
+        fabric_version = '2.10.0@aar'
     }
     repositories {
         google()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.gms:google-services:$google_services_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "io.fabric.tools:gradle:$fabric_gradle_version"
     }
 }
 

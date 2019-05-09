@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -60,6 +61,9 @@ dependencies {
 
             "com.google.firebase:firebase-core:$firebase_core_version"
     )
+    implementation("com.crashlytics.sdk.android:crashlytics:$fabric_version") {
+        transitive = true
+    }
     kapt(
             "com.google.dagger:dagger-compiler:$dagger_version",
             "com.arello-mobile:moxy-compiler:$moxy_version",
@@ -72,4 +76,8 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
 }
