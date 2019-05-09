@@ -1,17 +1,29 @@
-package com.mockingbird.spinkevich.exchangeme.feature
+package com.mockingbird.spinkevich.exchangeme.feature.core
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.R
+import com.mockingbird.spinkevich.exchangeme.core.feature.activity.FeatureActivity
+import com.mockingbird.spinkevich.exchangeme.di.graph.MainActivityGraph
 import com.mockingbird.spinkevich.exchangeme.feature.exchange.ExchangeFragment
 import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.feature.start.StartFragment
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
 import com.mockingbird.spinkevich.exchangeme.utils.putArguments
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FeatureActivity<MainActivityGraph>(), MainView {
+
+    @InjectPresenter
+    lateinit var presenter: MainPresenter
+
+    @ProvidePresenter
+    fun providePresenter() = graph.presenter
+
+    override fun createGraph() = MainActivityGraph()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +44,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount <= 1) {
-            finish()
+            presenter.checkBackButtonClickedTwice()
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun showClickBackButtonAgain() {
+        Toast.makeText(this, R.string.click_again_to_exit, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun closeApp() {
+        finish()
     }
 }

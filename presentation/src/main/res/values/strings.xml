@@ -3,6 +3,8 @@
     <string name="search_menu_title">Search</string>
     <string name="retry">Retry</string>
 
+    <string name="click_again_to_exit">Click again to exit</string>
+
     <!-- New currency screen -->
     <string name="add_menu_title">Add currency</string>
     <string name="search_field_hint">Currency or country</string>

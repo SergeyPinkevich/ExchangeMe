@@ -3,6 +3,7 @@ package com.mockingbird.spinkevich.exchangeme.di.component
 import com.mockingbird.spinkevich.exchangeme.core.feature.FeatureComponentCompanion
 import com.mockingbird.spinkevich.exchangeme.di.BaseApp
 import com.mockingbird.spinkevich.exchangeme.di.graph.ExchangeFragmentGraph
+import com.mockingbird.spinkevich.exchangeme.di.graph.MainActivityGraph
 import com.mockingbird.spinkevich.exchangeme.di.graph.NewCurrencyFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.di.graph.SplashActivityGraph
 import com.mockingbird.spinkevich.exchangeme.di.graph.StartFragmentGraph
@@ -27,6 +28,8 @@ import javax.inject.Singleton
     UpdateModule::class
 ])
 interface ApplicationComponent {
+
+    fun inject(graph: MainActivityGraph)
 
     fun inject(graph: SplashActivityGraph)
 

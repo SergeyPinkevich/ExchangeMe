@@ -6,7 +6,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.exchangeme.core.feature.activity.FeatureActivity
 import com.mockingbird.spinkevich.exchangeme.di.graph.SplashActivityGraph
-import com.mockingbird.spinkevich.exchangeme.feature.MainActivity
+import com.mockingbird.spinkevich.exchangeme.feature.core.MainActivity
 
 const val BF_BASE_COUNTRY = ".base.country"
 
