@@ -7,6 +7,7 @@ import com.mockingbird.spinkevich.domain.entity.Rate
 import com.mockingbird.spinkevich.domain.entity.Source
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
+import com.mockingbird.spinkevich.domain.usecase.OnBoardingUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.domain.usecase.SwapCountriesUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
@@ -20,6 +21,7 @@ class ExchangePresenter @Inject constructor(
     private val convertedCountriesUseCase: ConvertedCountriesUseCase,
     private val swapCountriesUseCase: SwapCountriesUseCase,
     private val ratesUseCase: RatesUseCase,
+    private val onBoardingUseCase: OnBoardingUseCase,
     private val appAnalytics: AppAnalytics
 ): BasePresenter<ExchangeView>() {
 
@@ -43,6 +45,20 @@ class ExchangePresenter @Inject constructor(
                     ratesList = response.rates.toMutableList()
                     if (response.source == Source.NETWORK) {
                         viewState.ratesUpdatesSuccessfully()
+                    }
+                }
+        )
+    }
+
+    private fun checkNeedShowOnboarding() {
+        unsubscribeOnDestroy(
+            onBoardingUseCase.isNeedShowOnBoarding()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWithTimberError { isNeedShowOnBoarding ->
+                    if (isNeedShowOnBoarding) {
+                        viewState.showOnBoarding()
+                    } else {
+                        viewState.hideOnBoarding()
                     }
                 }
         )
@@ -88,6 +104,7 @@ class ExchangePresenter @Inject constructor(
             initBaseCountry(country)
             appAnalytics.logBaseCountryAdded(country)
         } else {
+            checkNeedShowOnboarding()
             unsubscribeOnDestroy(
                 convertedCountriesUseCase.addConvertedCountry(country)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -101,6 +118,7 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun deleteCountry(country: Country) {
+        onBoardingUseCase.setNeedShowOnBoarding(false)
         unsubscribeOnDestroy(
             convertedCountriesUseCase.deleteConvertedCountry(country)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,6 +131,7 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun swapCountryWithBase(country: Country) {
+        onBoardingUseCase.setNeedShowOnBoarding(false)
         unsubscribeOnDestroy(
             swapCountriesUseCase.swapCountries(baseCountry!!, country)
                 .observeOn(AndroidSchedulers.mainThread())

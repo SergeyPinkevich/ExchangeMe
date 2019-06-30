@@ -1,6 +1,7 @@
 package com.mockingbird.spinkevich.data.source.preferences
 
 import android.content.Context
+import com.mockingbird.spinkevich.data.utils.boolean
 import com.mockingbird.spinkevich.data.utils.long
 import javax.inject.Inject
 
@@ -8,6 +9,7 @@ private const val FILE_NAME = "exchange.preferences"
 
 private const val KEY_LAST_TIME_UPDATE_COUNTRIES = ".last.time.update.countries"
 private const val KEY_LAST_TIME_UPDATE_RATES = ".last.time.update.rates"
+private const val KEY_NEED_SHOW_ON_BOARDING = ".need.show.on.boarding"
 
 class ApplicationPreferences @Inject constructor(context: Context) {
 
@@ -15,4 +17,5 @@ class ApplicationPreferences @Inject constructor(context: Context) {
 
     var lastTimeUpdateCountries by preferences.long(KEY_LAST_TIME_UPDATE_COUNTRIES)
     var lastTimeUpdateRates by preferences.long(KEY_LAST_TIME_UPDATE_RATES)
+    var isNeedShowOnBoarding by preferences.boolean(KEY_NEED_SHOW_ON_BOARDING, true)
 }

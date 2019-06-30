@@ -22,4 +22,10 @@ interface ExchangeView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun ratesUpdatesWithError()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showOnBoarding()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun hideOnBoarding()
 }

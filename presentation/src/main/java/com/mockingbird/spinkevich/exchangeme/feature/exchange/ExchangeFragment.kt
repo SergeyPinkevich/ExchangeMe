@@ -2,12 +2,14 @@ package com.mockingbird.spinkevich.exchangeme.feature.exchange
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -23,11 +25,15 @@ import com.mockingbird.spinkevich.exchangeme.feature.newcurrency.NewCurrencyFrag
 import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
 import com.mockingbird.spinkevich.exchangeme.utils.afterTextChanged
+import com.mockingbird.spinkevich.exchangeme.utils.makeGone
+import com.mockingbird.spinkevich.exchangeme.utils.makeVisible
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_amount
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_code
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_flag
 import kotlinx.android.synthetic.main.fragment_exchange.base_currency_name
 import kotlinx.android.synthetic.main.fragment_exchange.currencies_list
+import kotlinx.android.synthetic.main.fragment_exchange.onboarding_close
+import kotlinx.android.synthetic.main.fragment_exchange.onboarding_exchange
 
 class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView {
 
@@ -64,11 +70,20 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ExchangeAdapter({ presenter.deleteCountry(it) }, { presenter.swapCountryWithBase(it) })
-        val itemDecor = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
 
         currencies_list.adapter = adapter
         currencies_list.layoutManager = LinearLayoutManager(context)
-        currencies_list.addItemDecoration(itemDecor)
+        currencies_list.addItemDecoration(object: DividerItemDecoration(requireContext(), ClipDrawable.HORIZONTAL) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val position = parent.getChildAdapterPosition(view)
+                if (position == parent.adapter?.itemCount!! - 1) {
+                    outRect.setEmpty()
+                } else {
+                    super.getItemOffsets(outRect, view, parent, state)
+                }
+            }
+        })
+        onboarding_close.setOnClickListener { hideOnBoarding() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -121,5 +136,13 @@ class ExchangeFragment : FeatureFragment<ExchangeFragmentGraph>(), ExchangeView 
         val snackbar = Snackbar.make(view!!, getString(R.string.error_rates_update), Snackbar.LENGTH_SHORT)
         snackbar.setAction(R.string.retry) { presenter.updateRates() }
         snackbar.show()
+    }
+
+    override fun showOnBoarding() {
+        onboarding_exchange.makeVisible()
+    }
+
+    override fun hideOnBoarding() {
+        onboarding_exchange.makeGone()
     }
 }

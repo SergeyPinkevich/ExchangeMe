@@ -55,9 +55,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/avenir_medium"
+            android:hint="@string/hint_for_base_currency"
             android:inputType="numberDecimal"
             android:paddingBottom="0dp"
-            android:hint="@string/hint_for_base_currency"
             android:textColor="@color/black_text_color"
             android:textCursorDrawable="@null"
             android:textSize="32sp"
@@ -85,5 +85,32 @@
         android:id="@+id/currencies_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/onboarding_exchange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/avenir_regular"
+            android:text="@string/swipe_onboarding_text"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/onboarding_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete" />
+
+    </LinearLayout>
 
 </LinearLayout>
