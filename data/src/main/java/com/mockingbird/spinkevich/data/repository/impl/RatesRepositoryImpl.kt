@@ -27,6 +27,7 @@ class RatesRepositoryImpl @Inject constructor(
                 saveRatesInDatabase(it).subscribe()
                 updateRepository.setLastTimeUpdateRates(Calendar.getInstance().timeInMillis)
             }
+            .onErrorResumeNext { getCurrentRatesFromDatabase() }
             .subscribeOn(Schedulers.io())
     }
 
