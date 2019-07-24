@@ -6,7 +6,6 @@ import com.mockingbird.spinkevich.data.repository.UpdateRepository
 import com.mockingbird.spinkevich.data.source.api.service.RestService
 import com.mockingbird.spinkevich.data.source.db.dao.CountryDao
 import com.mockingbird.spinkevich.data.source.db.dao.CurrencyDao
-import com.mockingbird.spinkevich.data.source.db.entity.CurrencySchema
 import com.mockingbird.spinkevich.data.utils.JSONHelper
 import com.mockingbird.spinkevich.domain.entity.Country
 import io.reactivex.Completable
@@ -21,19 +20,6 @@ class CountryRepositoryImpl @Inject constructor(
     private val jsonHelper: JSONHelper,
     private val updateRepository: UpdateRepository
 ) : CountryRepository {
-
-    override fun addCountry(country: Country): Completable {
-        return Completable.fromCallable {
-            currencyDao.insert(CountryDatabaseMapper.convertCurrencyToDatabaseEntity(country.currency))
-            countryDao.insert(
-                CountryDatabaseMapper.convertToDatabaseEntity(
-                    country,
-                    isBase = false,
-                    isConverted = false
-                )
-            )
-        }
-    }
 
     override fun addBaseCountry(country: Country): Completable {
         return Completable.fromCallable {

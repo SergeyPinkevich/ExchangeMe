@@ -20,7 +20,7 @@ object CountryDatabaseMapper {
 
     fun convertToDatabaseEntity(country: Country, isBase: Boolean, isConverted: Boolean): CountrySchema {
         return CountrySchema(
-            id = country.hashCode(),
+            id = country.code.hashCode(),
             isBase = isBase,
             isConverted = isConverted,
             name = country.name,

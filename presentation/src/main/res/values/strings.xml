@@ -4,7 +4,7 @@
     <string name="retry">Retry</string>
 
     <string name="click_again_to_exit">Click again to exit</string>
-    <string name="swipe_onboarding_text">Swipe left to switch or delete currency</string>
+    <string name="swipe_onboarding_text">To switch or delete swipe converted currency to the left</string>
 
     <!-- New currency screen -->
     <string name="add_menu_title">Add currency</string>

@@ -6,8 +6,6 @@ import io.reactivex.Single
 
 interface CountryRepository {
 
-    fun addCountry(country: Country): Completable
-
     fun addBaseCountry(country: Country): Completable
 
     fun addConvertedCountry(country: Country): Completable

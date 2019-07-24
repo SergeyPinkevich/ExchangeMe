@@ -93,7 +93,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         android:padding="12dp">
 
         <TextView
@@ -103,6 +103,7 @@
             android:fontFamily="@font/avenir_regular"
             android:text="@string/swipe_onboarding_text"
             android:textColor="@color/white"
+            android:paddingEnd="8dp"
             android:textSize="18sp" />
 
         <ImageView
