@@ -57,6 +57,7 @@ class ExchangePresenter @Inject constructor(
                 .subscribeWithTimberError { isNeedShowOnBoarding ->
                     if (isNeedShowOnBoarding) {
                         viewState.showOnBoarding()
+                        onBoardingUseCase.setLastTimeShownOnBoarding(System.currentTimeMillis())
                     } else {
                         viewState.hideOnBoarding()
                     }

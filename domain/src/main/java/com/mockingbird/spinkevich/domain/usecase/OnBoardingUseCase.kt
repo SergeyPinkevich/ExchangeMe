@@ -7,4 +7,6 @@ interface OnBoardingUseCase {
     fun isNeedShowOnBoarding(): Single<Boolean>
 
     fun setNeedShowOnBoarding(isNeedShow: Boolean)
+
+    fun setLastTimeShownOnBoarding(timeStamp: Long)
 }

@@ -5,7 +5,7 @@
     <string name="retry">Повторить</string>
 
     <string name="click_again_to_exit">Нажмите назад еще раз для выхода</string>
-    <string name="swipe_onboarding_text">Чтобы сменить или удалить валюта смахните влево</string>
+    <string name="swipe_onboarding_text">Чтобы сменить или удалить валюту смахните влево</string>
 
     <!-- New currency screen -->
     <string name="add_menu_title">Добавить валюту</string>

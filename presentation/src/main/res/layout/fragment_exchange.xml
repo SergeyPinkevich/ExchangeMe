@@ -93,7 +93,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="visible"
+        android:visibility="gone"
         android:padding="12dp">
 
         <TextView
