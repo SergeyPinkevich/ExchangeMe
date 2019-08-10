@@ -4,12 +4,12 @@ import com.arellomobile.mvp.InjectViewState
 import com.mockingbird.spinkevich.analytics.AppAnalytics
 import com.mockingbird.spinkevich.domain.entity.Country
 import com.mockingbird.spinkevich.domain.entity.Rate
-import com.mockingbird.spinkevich.domain.entity.Source
 import com.mockingbird.spinkevich.domain.usecase.BaseCountryUseCase
 import com.mockingbird.spinkevich.domain.usecase.ConvertedCountriesUseCase
 import com.mockingbird.spinkevich.domain.usecase.OnBoardingUseCase
 import com.mockingbird.spinkevich.domain.usecase.RatesUseCase
 import com.mockingbird.spinkevich.domain.usecase.SwapCountriesUseCase
+import com.mockingbird.spinkevich.domain.usecase.UpdateUseCase
 import com.mockingbird.spinkevich.exchangeme.core.BasePresenter
 import com.mockingbird.spinkevich.exchangeme.utils.subscribeWithTimberError
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,8 +22,9 @@ class ExchangePresenter @Inject constructor(
     private val swapCountriesUseCase: SwapCountriesUseCase,
     private val ratesUseCase: RatesUseCase,
     private val onBoardingUseCase: OnBoardingUseCase,
+    private val updateUseCase: UpdateUseCase,
     private val appAnalytics: AppAnalytics
-): BasePresenter<ExchangeView>() {
+) : BasePresenter<ExchangeView>() {
 
     private var isBaseCountryInitialized = false
     private var baseCountry: Country? = null
@@ -38,16 +39,20 @@ class ExchangePresenter @Inject constructor(
 
     fun updateRates() {
         unsubscribeOnDestroy(
-            ratesUseCase.getCurrentRates()
+            ratesUseCase.getCurrentRatesFromDatabase()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { viewState.ratesUpdatesWithError() }
-                .subscribeWithTimberError { response ->
-                    ratesList = response.rates.toMutableList()
-                    if (response.source == Source.NETWORK) {
-                        viewState.ratesUpdatesSuccessfully()
-                    }
-                }
+                .subscribeWithTimberError { ratesList = it.rates.toMutableList() }
         )
+
+        if (updateUseCase.isNeedUpdateRates()) {
+            unsubscribeOnDestroy(
+                ratesUseCase.getCurrentRatesFromNetwork()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess { viewState.ratesUpdatesSuccessfully() }
+                    .doOnError { viewState.ratesUpdatesWithError() }
+                    .subscribeWithTimberError { ratesList = it.rates.toMutableList() }
+            )
+        }
     }
 
     private fun checkNeedShowOnboarding() {

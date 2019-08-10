@@ -5,5 +5,7 @@ import io.reactivex.Single
 
 interface RatesUseCase {
 
-    fun getCurrentRates(): Single<RateResponse>
+    fun getCurrentRatesFromNetwork(): Single<RateResponse>
+
+    fun getCurrentRatesFromDatabase(): Single<RateResponse>
 }
