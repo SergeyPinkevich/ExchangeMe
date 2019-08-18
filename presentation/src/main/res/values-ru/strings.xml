@@ -18,6 +18,7 @@
     <string name="description_permission">Мы сможем определить валюту страны, в которой вы сейчас находитесь</string>
     <string name="allow_permission_button">Разрешить</string>
     <string name="refuse_permission_button">Выбрать вручную</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
 
     <string name="error_rates_update">Не удалось обновить курсы валют</string>
     <string name="successfull_rates_update">Курсы валют обновлены</string>

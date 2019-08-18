@@ -17,6 +17,7 @@
     <string name="description_permission">It will us to determine the currency which country you are</string>
     <string name="allow_permission_button">Allow</string>
     <string name="refuse_permission_button">Select manually</string>
+    <string name="privacy_policy">Privacy policy</string>
 
     <string name="hint_for_base_currency" translatable="false">0</string>
 

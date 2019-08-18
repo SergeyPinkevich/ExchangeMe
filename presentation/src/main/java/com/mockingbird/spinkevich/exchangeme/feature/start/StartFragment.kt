@@ -1,6 +1,7 @@
 package com.mockingbird.spinkevich.exchangeme.feature.start
 
 import android.content.pm.PackageManager
+import android.graphics.Paint.UNDERLINE_TEXT_FLAG
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
@@ -13,6 +14,7 @@ import com.mockingbird.spinkevich.exchangeme.R
 import com.mockingbird.spinkevich.exchangeme.core.feature.fragment.FeatureFragment
 import com.mockingbird.spinkevich.exchangeme.di.graph.StartFragmentGraph
 import com.mockingbird.spinkevich.exchangeme.feature.exchange.ExchangeFragment
+import com.mockingbird.spinkevich.exchangeme.feature.privacypolicy.PrivacyPolicyFragment
 import com.mockingbird.spinkevich.exchangeme.feature.splash.BF_BASE_COUNTRY
 import com.mockingbird.spinkevich.exchangeme.utils.addFragmentToStack
 import com.mockingbird.spinkevich.exchangeme.utils.makeGone
@@ -20,6 +22,7 @@ import com.mockingbird.spinkevich.exchangeme.utils.makeVisible
 import com.mockingbird.spinkevich.exchangeme.utils.putArguments
 import kotlinx.android.synthetic.main.fragment_start.permission_allow_button
 import kotlinx.android.synthetic.main.fragment_start.permission_refuse_button
+import kotlinx.android.synthetic.main.fragment_start.privacy_policy
 import kotlinx.android.synthetic.main.fragment_start.start_content
 import kotlinx.android.synthetic.main.fragment_start.start_progress
 import kotlinx.android.synthetic.main.fragment_start.start_root_layout
@@ -43,6 +46,8 @@ class StartFragment : FeatureFragment<StartFragmentGraph>(), StartView {
 
         (activity as AppCompatActivity).supportActionBar?.hide()
 
+        privacy_policy.paintFlags = privacy_policy.paintFlags or UNDERLINE_TEXT_FLAG
+        privacy_policy.setOnClickListener { requireActivity().addFragmentToStack(R.id.fragment_container, PrivacyPolicyFragment()) }
         permission_allow_button.setOnClickListener { requestLocationPermission() }
         permission_refuse_button.setOnClickListener { openAddCurrencyScreen() }
     }
