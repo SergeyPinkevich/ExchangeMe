@@ -28,11 +28,18 @@ class CountryInteractor @Inject constructor(
     }
 
     override fun getAllCountriesList(): Single<List<Country>> {
-        return if (updateUseCase.isNeedUpdateCountries()) {
-            countryRepository.getCountriesListFromNetwork()
-        } else {
-            countryRepository.getCountriesListFromDatabase()
-        }.subscribeOn(Schedulers.io())
+        return countryRepository.getCountriesListFromDatabase()
+            .flatMap { countries ->
+                if (updateUseCase.isNeedUpdateCountries()) {
+                    countryRepository.getCountriesListFromNetwork()
+                }
+                if (countries.isNotEmpty()) {
+                    Single.fromCallable { countries }
+                } else {
+                    countryRepository.getCountriesListFromNetwork()
+                }
+            }
+            .subscribeOn(Schedulers.io())
     }
 
     override fun getConvertedCountriesList(): Single<List<Country>> {
